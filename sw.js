@@ -1,9 +1,9 @@
 // --- Forgewright PWA Service Worker ---
 const CACHE_NAME = 'forgewright-v1';
 const APP_SHELL = [
-  "/",
-  "/index.html",
-  "/Background.png",
+  "./",
+  "./index.html",
+  "./Background.png",
   "/Impact_Hit_2_Flash_1_COLOR_1_1200x1200.webm",
   "/Explosion_Particles_1_Flash_Shattert_COLOR_4_1200x1200.webm",
   "/Enchant1.webm",
