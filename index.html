@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<link rel="manifest" href="/manifest.webmanifest">
+<link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#111111">
 <meta name="apple-mobile-web-app-capable" content="yes"> and
 <link rel="apple-touch-icon" href="/icons/forge-192.png">.)
@@ -1999,7 +1999,7 @@ document.getElementById('installBtn').addEventListener('click', async ()=>{
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function () {
-    navigator.serviceWorker.register('/sw.js', { scope: '/' })
+    navigator.serviceWorker.register('sw.js')
       .catch(function(err){ console.log('SW registration failed:', err); });
   });
 }
