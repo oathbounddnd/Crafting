@@ -1,0 +1,2130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#111111">
+<meta name="apple-mobile-web-app-capable" content="yes"> and
+<link rel="apple-touch-icon" href="/icons/forge-192.png">.)
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FORGEWRIGHT — Craft • Enchant • Repair</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=IM+Fell+English+SC&display=swap" rel="stylesheet">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#111111">
+<style>
+:root{
+  --ink:#e9dcc5; --ink-dim:#c9bfa8; --line:rgba(255,255,255,.08);
+  --glass:rgba(0,0,0,.62); --glass2:rgba(0,0,0,.45); --ember:#ff623a;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; color:var(--ink);
+  background:#000 url('Background.png') center/cover fixed no-repeat;
+  font-family:"IM Fell English SC", serif;
+}
+header{position:sticky;top:0;z-index:5;background:linear-gradient(180deg, rgba(0,0,0,.75), rgba(0,0,0,.35));border-bottom:1px solid var(--line);backdrop-filter:blur(2px)}
+.container{max-width:1100px;margin:0 auto;padding:14px}
+h1{margin:0 0 6px;font-family:"Cinzel Decorative",serif;letter-spacing:.04em;text-shadow:0 1px 0 #000, 0 0 18px rgba(255,80,30,.25)}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+.tab-btn,.craft-tab{appearance:none;border:1px solid var(--line);background:linear-gradient(180deg,#1a1a1a,#121212);color:var(--ink);padding:8px 12px;border-radius:12px;cursor:pointer;font-size:14px;letter-spacing:.03em}
+.tab-btn.active,.craft-tab.active{outline:1px solid rgba(255,100,60,.5);box-shadow:0 0 0 2px rgba(255,100,60,.12) inset}
+.gloss-short{opacity:.85}
+.gloss-note{font-size:12px; line-height:1.2; color:var(--ink-dim); margin-top:2px}
+.gloss-inline{opacity:.95}
+.main{max-width:1100px;margin:16px auto 70px;padding:0 14px}
+.panel{background:linear-gradient(180deg,var(--glass),var(--glass2));border:1px solid var(--line);border-radius:14px;padding:14px;backdrop-filter:blur(3px);box-shadow:inset 0 0 40px rgba(0,0,0,.35),0 2px 18px rgba(0,0,0,.25)}
+.hidden{display:none!important}
+h2{margin:0 0 6px;font-size:20px;letter-spacing:.04em}
+h3{margin:0 0 6px;font-size:17px;letter-spacing:.03em}
+.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.inline{display:flex;align-items:center;gap:8px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+@media (max-width:900px){.grid2,.grid3{grid-template-columns:1fr}}
+input,select,textarea{width:100%;padding:8px 10px;border-radius:10px;background:#0b0b0b;color:var(--ink);border:1px solid var(--line);font-family:inherit}
+.select-inline{width:auto}
+textarea{min-height:70px;resize:vertical}
+.btn-primary{appearance:none;border:1px solid var(--line);background:linear-gradient(180deg,#1b1b1b,#121212);color:var(--ink);padding:8px 12px;border-radius:10px;cursor:pointer}
+.btn-ghost{background:transparent}
+.badge{display:inline-block;border:1px solid var(--line);background:rgba(255,255,255,.05);padding:2px 6px;border-radius:8px;margin-left:6px;font-size:12px;color:var(--ink-dim)}
+.note-sm{font-size:12px;color:var(--ink-dim)}
+.lib-list{display:flex;flex-direction:column;gap:8px}
+.lib-item{display:flex;justify-content:space-between;align-items:center;gap:10px;background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:10px;padding:10px}
+.lib-del{background:#2a1212;border:1px solid #3a1a1a;color:#ffbdbd;border-radius:10px;padding:6px 10px;cursor:pointer}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:rgba(0,0,0,.55);cursor:pointer;user-select:none;font-size:14px}
+.chip.active{outline:1px solid rgba(255,100,60,.5);background:rgba(0,0,0,.75)}
+.progress{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.progress-rail{flex:1;height:8px;background:#0e0e0e;border:1px solid var(--line);border-radius:999px;position:relative}
+.progress-fill{position:absolute;inset:0;width:0;background:linear-gradient(90deg,#20110f,#55251f,#20110f);border-radius:999px}
+.steps{display:flex;gap:6px}
+.step-pill{padding:4px 8px;border:1px solid var(--line);border-radius:999px;font-size:12px;opacity:.6}
+.step-pill.active{opacity:1;outline:1px solid rgba(255,100,60,.4)}
+.kicker{font-size:12px;color:var(--ink-dim);text-transform:uppercase;letter-spacing:.12em}
+.bar-row{display:flex;align-items:center;gap:8px}
+.hp-rail,.craft-rail{height:8px;border-radius:999px;background:#0e0e0e;border:1px solid var(--line);position:relative}
+.hp-rail{width:220px} .craft-rail{width:220px}
+.hp-fill{position:absolute;inset:0;width:0;background:linear-gradient(90deg,#2e0c0a,#88221b)}
+.craft-fill{position:absolute;inset:0;width:0;background:linear-gradient(90deg,#171717,#444)}
+.flash-outline{box-shadow:0 0 0 2px rgba(255,130,60,.6) inset,0 0 18px rgba(255,80,30,.35);transition:box-shadow .3s ease}
+#fxCraft,#fxEnchant{position:fixed;inset:0;display:none;place-items:center;z-index:50;pointer-events:none;background:radial-gradient(500px 300px at 50% 30%,rgba(255,80,30,.15),rgba(0,0,0,.0) 70%)}
+#fxCraft.show,#fxEnchant.show{display:grid}
+.fx-wrap{position:relative;width:70vmin;height:70vmin}
+.fx-wrap video,.fx-wrap .fx-fallback{position:absolute;left:50%;top:35%;transform:translate(-50%,-50%);width:90vmin;height:auto;display:none;filter:drop-shadow(0 0 30px rgba(255,120,80,.35))}
+.fx-wrap .fx-fallback{display:none;width:70vmin;height:70vmin;border-radius:50%;background:radial-gradient(circle,rgba(255,120,80,.25),rgba(0,0,0,0) 60%)}
+/* wizard dynamic area scroll */
+#f-dyn{max-height:60vh;overflow:auto;padding-right:4px}
+.dyn-step{margin-top:10px;border-top:1px solid var(--line);padding-top:8px}
+/* one-step-at-a-time for dynamic forge pages */
+.dyn-step{display:none}
+.dyn-step.active{display:block}
+/* — Clean, aligned list for Weapon Properties (Step 8) — */
+#f-w8 #w-props{display:flex;flex-direction:column;gap:8px}
+#f-w8 #w-props .lib-item{
+  display:grid;
+  grid-template-columns: 1fr auto; /* name on left, checkbox on right */
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:linear-gradient(180deg, rgba(0,0,0,.28), rgba(0,0,0,.18));
+}
+#f-w8 #w-props .lib-name{font-size:14px; line-height:1.3; }
+#f-w8 #w-props .badge{margin-left:8px}
+#f-w8 #w-props input[type="checkbox"]{transform:scale(1.2)}
+#rotateOverlay{
+  position:fixed; inset:0; z-index:9999;
+  display:none; align-items:center; justify-content:center;
+  background:rgba(0,0,0,.85);
+  color:#e9dcc5; font-family:"IM Fell English SC", serif; letter-spacing:.04em;
+}
+#rotateOverlay .rotateCard{
+  padding:18px 22px; border:1px solid var(--line); border-radius:14px;
+  background:linear-gradient(180deg, rgba(0,0,0,.5), rgba(0,0,0,.3));
+  box-shadow:0 0 24px rgba(255,90,48,.25);
+}
+@media (orientation:portrait){
+  #rotateOverlay{ display:flex; }
+}
+
+</style>
+</head>
+<body>
+<div id="rotateOverlay">
+  <div class="rotateCard">
+    Rotate device for landscape view
+  </div>
+</div>
+
+<header>
+  <div class="container">
+    <h1>FORGEWRIGHT</h1>
+    <nav>
+      <button class="tab-btn active" data-tab="#craft">Craft</button>
+      <button class="tab-btn" data-tab="#enchant">Enchanting</button>
+      <button class="tab-btn" data-tab="#repairs">Repairs</button>
+    </nav>
+  </div>
+</header>
+
+<main class="main">
+  <section id="craft">
+    <div class="panel">
+      <div class="section-title">
+        <h2>Crafting</h2>
+        <div class="inline">
+          <button class="craft-tab" data-view="#forge">Crafting Forge</button>
+          <button class="craft-tab" data-view="#schematics">Schematics</button>
+          <button class="craft-tab" data-view="#materials">Materials</button>
+          <button class="craft-tab" data-view="#components">Components</button>
+        </div>
+      </div>
+
+      <!-- Forge wizard host -->
+      <div id="forge"><div id="forgeStepsWrap"></div></div>
+
+      <!-- Schematics -->
+      <div id="schematics" class="hidden">
+        <div class="grid2">
+          <div class="panel">
+            <h3>Add Schematic</h3>
+            <div class="grid3">
+              <select id="schType" class="select-inline"><option>Weapon</option><option>Armour</option><option>Shield</option></select>
+              <input id="schName" placeholder="Name">
+              <input id="schNeeds" placeholder="Components (comma-separated)">
+            </div>
+            <div class="inline sch-only sch-weapon" style="margin-top:8px;">
+              <label class="note-sm">Weapon kind:</label>
+              <select id="schWeaponKind" class="select-inline">
+                <option>Simple Melee</option><option>Simple Ranged</option><option>Martial Melee</option><option>Martial Ranged</option>
+              </select>
+            </div>
+            <div class="inline sch-only sch-armour hidden" style="margin-top:8px;">
+              <label class="note-sm">Armour class:</label>
+              <select id="schArmourClass" class="select-inline"><option>Light</option><option>Medium</option><option>Heavy</option></select>
+            </div>
+            <div class="inline sch-only sch-shield hidden" style="margin-top:8px;">
+              <label class="note-sm">Shield form:</label>
+              <input id="schShieldForm" class="select-inline" placeholder="e.g., Buckler / Tower / Shield">
+            </div>
+            <div class="inline" style="margin-top:10px;"><button class="btn-primary" id="addSchematic">+ Add Schematic</button></div>
+          </div>
+
+          <div class="panel">
+            <h3>Current Schematics</h3>
+            <div class="inline" style="margin:6px 0 10px;">
+              <button class="schem-switch active" data-list="#listW">Weapons</button>
+              <button class="schem-switch" data-list="#listA">Armour</button>
+              <button class="schem-switch" data-list="#listS">Shields</button>
+            </div>
+            <div id="listW" class="lib-list"></div>
+            <div id="listA" class="lib-list hidden"></div>
+            <div id="listS" class="lib-list hidden"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Materials -->
+      <div id="materials" class="hidden">
+        <div class="panel">
+          <h3>Add Material</h3>
+          <div class="grid3">
+            <input id="matName" placeholder="Name">
+            <select id="matRarity" class="select-inline">
+              <option>Common</option><option>Uncommon</option><option>Rare</option><option>Very Rare</option><option>Legendary</option>
+            </select>
+            <input id="matHP" type="number" min="0" placeholder="HP">
+          </div>
+          <textarea id="matDesc" placeholder="Description"></textarea>
+          <div class="inline" style="margin-top:8px;"><button class="btn-primary" id="addMaterial">+ Add Material</button></div>
+          <div class="lib-list" id="matList" style="margin-top:10px;"></div>
+        </div>
+      </div>
+
+      <!-- Components -->
+      <div id="components" class="hidden">
+        <div class="panel">
+          <h3>Add Component</h3>
+          <div class="grid2">
+            <input id="compName" placeholder="Name">
+            <input id="compDesc" placeholder="Description">
+          </div>
+          <div class="inline" style="margin-top:8px;"><button class="btn-primary" id="addComponent">+ Add Component</button></div>
+          <div class="lib-list" id="compList" style="margin-top:10px;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enchanting -->
+  <section id="enchant" class="hidden">
+    <div class="panel">
+      <div class="section-title">
+        <h2>Enchanting</h2>
+        <div class="inline">
+          <button class="en-tab craft-tab active" data-view="#ench-work">Enchanting</button>
+          <button class="en-tab craft-tab" data-view="#ench-comps">Components</button>
+          <button class="en-tab craft-tab" data-view="#ench-recipes">Recipes</button>
+          <button class="en-tab craft-tab" data-view="#ench-queue">Active</button>
+        </div>
+      </div>
+      <div id="ench-work"></div>
+      <div id="ench-comps" class="hidden"></div>
+      <div id="ench-recipes" class="hidden"></div>
+      <div id="ench-queue" class="hidden"></div>
+    </div>
+  </section>
+
+  <!-- Repairs -->
+  <section id="repairs" class="hidden">
+    <div class="panel">
+      <div class="section-title">
+        <h2>Repairs & Inventory</h2>
+        <div class="inline">
+          <input id="repName" placeholder="Add item name">
+          <select id="repMat" class="select-inline"></select>
+          <input id="repHP" type="number" min="0" placeholder="HP (if no material)">
+          <button class="btn-primary" id="repAdd">+ Add Item</button>
+        </div>
+      </div>
+      <div id="repairsWrap" class="lib-list"></div>
+    </div>
+  </section>
+</main>
+
+<!-- Audio & FX -->
+<audio id="bgm" src="Audio Background.ogg" preload="auto" loop autoplay muted playsinline></audio>
+<audio id="sfxCraft" preload="auto"></audio>
+<audio id="sfxEnchant" preload="auto"></audio>
+
+<div id="fxCraft"><div class="fx-wrap">
+  <video id="fxC1" muted playsinline preload="auto">
+    <source src="Impact_Hit_2_Flash_1_COLOR_1_1200x1200.webm" type="video/webm">
+  </video>
+  <video id="fxC2" muted playsinline preload="auto">
+    <source src="Explosion_Particles_1_Flash_Shattert_COLOR_4_1200x1200.webm" type="video/webm">
+  </video>
+  <div class="fx-fallback" id="fxCFallback"></div>
+</div></div>
+
+<div id="fxEnchant"><div class="fx-wrap">
+  <video id="fxE1" muted playsinline preload="auto">
+    <source src="Enchant1.webm" type="video/webm">
+  </video>
+  <video id="fxE2" muted playsinline preload="auto">
+    <source src="Enchant2.webm" type="video/webm">
+  </video>
+  <div class="fx-fallback" id="fxEFallback"></div>
+</div></div>
+
+<script>
+/* ===== Bootstrap & Persistence ===== */
+(function(){
+  "use strict";
+  var $=function(s,sc){return (sc||document).querySelector(s)};
+  var $$=function(s,sc){return Array.prototype.slice.call((sc||document).querySelectorAll(s))};
+  var ci=function(s){return (s||"").trim().toLowerCase()};
+  var nowId=function(){return Date.now()+Math.floor(Math.random()*9999)};
+
+  var LSK={REP:'fw_rep',COMP:'fw_comp',MAT:'fw_mat',SW:'fw_sw',SA:'fw_sa',SS:'fw_ss',REC:'fw_rec',QUEUE:'fw_q'};
+  function load(k,d){ try{var s=localStorage.getItem(k); return s?JSON.parse(s):d;}catch(e){return d} }
+  function save(k,v){ try{localStorage.setItem(k,JSON.stringify(v));}catch(e){} }
+  ['REP','COMP','MAT','SW','SA','SS','REC','QUEUE'].forEach(function(k){ if(localStorage.getItem(LSK[k])===null) save(LSK[k],[]) });
+  window.forgewright={LSK:LSK,load:load,save:save};
+
+  // top nav
+  $$('.tab-btn').forEach(function(b){
+    b.addEventListener('click',function(){
+      $$('.tab-btn').forEach(function(x){x.classList.remove('active')}); b.classList.add('active');
+      ['#craft','#enchant','#repairs'].forEach(function(id){ var el=$(id); if(el) el.classList.add('hidden') });
+      var v=b.getAttribute('data-tab'); var tgt=$(v); if(tgt) tgt.classList.remove('hidden');
+      if(v==="#repairs") renderRepairs();
+      if(v==="#enchant" && typeof window.mountEnchant==='function'){ window.mountEnchant(true); }
+    });
+  });
+
+  // craft inner tabs
+  $$('#craft .craft-tab').forEach(function(b){
+    b.addEventListener('click',function(){
+      var v=b.getAttribute('data-view'); if(!v) return;
+      $$('#craft .craft-tab').forEach(function(x){x.classList.remove('active')}); b.classList.add('active');
+      ['#forge','#schematics','#materials','#components'].forEach(function(id){ var el=$(id); if(el) el.classList.add('hidden') });
+      var tgt=$(v); if(tgt) tgt.classList.remove('hidden');
+      if(v==="#materials") renderMaterials();
+      if(v==="#components") renderComponents();
+      if(v==="#schematics") renderSchematics();
+      if(v==="#forge" && typeof window.mountForge==='function') window.mountForge();
+    });
+  });
+
+  /* ---------- Materials ---------- */
+  function mats(){return load(LSK.MAT,[])}
+  function setMats(a){ save(LSK.MAT,a); renderMaterials(); syncRepMat(); }
+  function renderMaterials(){
+    var list=$('#matList'); if(!list) return; var data=mats(); list.innerHTML='';
+    if(!data.length){ list.innerHTML='<div class="note-sm">No materials yet.</div>'; }
+    data.forEach(function(m,i){
+      if(typeof m.qty!=='number') m.qty=0;
+      var row=document.createElement('div'); row.className='lib-item';
+      row.innerHTML='<div><div class="lib-name">'+m.name+' <span class="badge">'+m.rarity+'</span> <span class="badge">Qty '+(m.qty||0)+'</span></div><div class="note-sm">HP '+(m.hp||0)+(m.desc?(' — '+m.desc):'')+'</div></div>';
+      var act=document.createElement('div'); act.className='inline';
+      var minus=document.createElement('button'); minus.className='btn-primary btn-ghost'; minus.textContent='–';
+      var plus=document.createElement('button'); plus.className='btn-primary btn-ghost'; plus.textContent='+';
+      var del=document.createElement('button'); del.className='lib-del'; del.textContent='Delete';
+      minus.onclick=function(){ var a=mats(); a[i].qty=Math.max(0,(a[i].qty||0)-1); setMats(a); };
+      plus.onclick=function(){ var a=mats(); a[i].qty=(a[i].qty||0)+1; setMats(a); };
+      del.onclick=function(){ var a=mats(); a.splice(i,1); setMats(a); };
+      act.appendChild(minus); act.appendChild(plus); act.appendChild(del);
+      row.appendChild(act); list.appendChild(row);
+    });
+    // Repairs "Add item" material dropdown
+    var sel=$('#repMat'); if(sel){ sel.innerHTML='<option value="">(no material)</option>'+mats().map(function(m){return '<option>'+m.name+'</option>'}).join(''); }
+  }
+  $('#addMaterial').addEventListener('click',function(){
+    var n=$('#matName').value.trim(); if(!n) return;
+    var r=$('#matRarity').value; var hp=parseInt($('#matHP').value,10)||0; var d=$('#matDesc').value.trim();
+    var a=mats(); a.unshift({name:n,rarity:r,hp:hp,desc:d,qty:0}); setMats(a);
+    $('#matName').value=''; $('#matHP').value=''; $('#matDesc').value='';
+  });
+  function syncRepMat(){
+    var ms=mats(); var map={}; ms.forEach(function(m){map[ci(m.name)]=m});
+    var arr=load(LSK.REP,[]), touch=false;
+    arr.forEach(function(r){
+      if(r.material&&r.material.name){
+        var hit=map[ci(r.material.name)]; if(hit){ r.material={name:hit.name,rarity:hit.rarity,hp:hit.hp}; touch=true; }
+      }
+    });
+    if(touch){ save(LSK.REP,arr); renderRepairs(); }
+  }
+
+  /* ---------- Components ---------- */
+  function comps(){return load(LSK.COMP,[])}
+  function setComps(a){ save(LSK.COMP,a); renderComponents(); document.dispatchEvent(new CustomEvent('fw:componentsChanged')); }
+  function renderComponents(){
+    var list=$('#compList'); if(!list) return; var data=comps(); list.innerHTML='';
+    if(!data.length){ list.innerHTML='<div class="note-sm">No components yet.</div>'; }
+    data.forEach(function(c,i){
+      if(typeof c.qty!=='number') c.qty=0;
+      var row=document.createElement('div'); row.className='lib-item';
+      row.innerHTML='<div><div class="lib-name">'+c.name+' <span class="badge">Qty '+(c.qty||0)+'</span></div><div class="note-sm">'+(c.desc||'')+'</div></div>';
+      var act=document.createElement('div'); act.className='inline';
+      var m=document.createElement('button'); m.className='btn-primary btn-ghost'; m.textContent='–';
+      var p=document.createElement('button'); p.className='btn-primary btn-ghost'; p.textContent='+';
+      var d=document.createElement('button'); d.className='lib-del'; d.textContent='Delete';
+      m.onclick=function(){ var a=comps(); a[i].qty=Math.max(0,(a[i].qty||0)-1); setComps(a); };
+      p.onclick=function(){ var a=comps(); a[i].qty=(a[i].qty||0)+1; setComps(a); };
+      d.onclick=function(){ var a=comps(); a.splice(i,1); setComps(a); };
+      act.appendChild(m); act.appendChild(p); act.appendChild(d);
+      row.appendChild(act); list.appendChild(row);
+    });
+  }
+  $('#addComponent').addEventListener('click',function(){
+    var n=$('#compName').value.trim(); if(!n) return; var d=$('#compDesc').value.trim();
+    var a=comps(); a.unshift({name:n,desc:d,qty:0}); setComps(a);
+    $('#compName').value=''; $('#compDesc').value='';
+  });
+
+  /* ---------- Schematics ---------- */
+  function schemW(){return load(LSK.SW,[])}
+  function schemA(){return load(LSK.SA,[])}
+  function schemS(){return load(LSK.SS,[])}
+  function renderSchematics(){
+    // Tab switchers inside the schematics panel
+    $$('#schematics .schem-switch').forEach(function(b){
+      b.onclick=function(){
+        $$('#schematics .schem-switch').forEach(function(x){x.classList.remove('active')}); b.classList.add('active');
+        ['#listW','#listA','#listS'].forEach(function(id){ var el=$(id); if(el) el.classList.add('hidden') });
+        var v=b.getAttribute('data-list'); var tgt=$(v); if(tgt) tgt.classList.remove('hidden');
+      };
+    });
+    function fill(id,data,line){
+      var el=$(id); if(!el) return; el.innerHTML='';
+      if(!data.length){ el.innerHTML='<div class="note-sm">None yet.</div>'; return; }
+      data.forEach(function(s,i){
+        var row=document.createElement('div'); row.className='lib-item';
+        row.innerHTML='<div><div class="lib-name">'+s.name+'</div><div class="note-sm">'+line(s)+'</div></div>';
+        var del=document.createElement('button'); del.className='lib-del'; del.textContent='Delete';
+        del.onclick=function(){
+          if(id==='#listW'){ var a=schemW(); a.splice(i,1); save(LSK.SW,a); }
+          if(id==='#listA'){ var b=schemA(); b.splice(i,1); save(LSK.SA,b); }
+          if(id==='#listS'){ var c=schemS(); c.splice(i,1); save(LSK.SS,c); }
+          renderSchematics();
+        };
+        row.appendChild(del); el.appendChild(row);
+      });
+    }
+    fill('#listW',schemW(),function(s){return (s.kind||'')+' • Needs: '+((s.needs||[]).join(', ')||'—')});
+    fill('#listA',schemA(),function(s){return (s.class||'')+' • Needs: '+((s.needs||[]).join(', ')||'—')});
+    fill('#listS',schemS(),function(s){return (s.form||'Shield')+' • Needs: '+((s.needs||[]).join(', ')||'—')});
+    // ensure default visible stays visible
+    ['#listW','#listA','#listS'].forEach(function(id){ $(id).classList.add('hidden') });
+    var active=$('#schematics .schem-switch.active'); var listSel=(active&&active.getAttribute('data-list'))||'#listW';
+    $(listSel).classList.remove('hidden');
+  }
+  function showSchemInputs(){
+    var t=$('#schType').value; $$('.sch-only').forEach(function(x){x.classList.add('hidden')});
+    if(t==='Weapon') $$('.sch-weapon').forEach(function(x){x.classList.remove('hidden')});
+    if(t==='Armour') $$('.sch-armour').forEach(function(x){x.classList.remove('hidden')});
+    if(t==='Shield') $$('.sch-shield').forEach(function(x){x.classList.remove('hidden')});
+  }
+  $('#schType').addEventListener('change',showSchemInputs); showSchemInputs();
+  $('#addSchematic').addEventListener('click',function(){
+    var type=$('#schType').value; var name=$('#schName').value.trim(); if(!name) return;
+    var needs=($('#schNeeds').value||'').split(',').map(function(s){return s.trim()}).filter(Boolean);
+    if(type==='Weapon'){
+      var kind=$('#schWeaponKind').value; var a=schemW(); a.unshift({id:'sw-'+nowId(),name:name,type:'Weapon',kind:kind,needs:needs}); save(LSK.SW,a);
+    }else if(type==='Armour'){
+      var cls=$('#schArmourClass').value; var b=schemA(); b.unshift({id:'sa-'+nowId(),name:name,type:'Armour',class:cls,needs:needs}); save(LSK.SA,b);
+    }else{
+      var form=$('#schShieldForm').value.trim()||'Shield'; var c=schemS(); c.unshift({id:'ss-'+nowId(),name:name,type:'Shield',form:form,needs:needs}); save(LSK.SS,c);
+    }
+    $('#schName').value=''; $('#schNeeds').value='';
+    renderSchematics();
+  });
+
+  /* ---------- Repairs ---------- */
+  function reps(){return load(LSK.REP,[])}
+  function setReps(a){ save(LSK.REP,a); renderRepairs(); document.dispatchEvent(new CustomEvent('fw:repairsChanged')); }
+  function renderRepairs(){
+    var wrap=$('#repairsWrap'); if(!wrap) return; var arr=reps(); wrap.innerHTML='';
+    if(!arr.length){ wrap.innerHTML='<div class="note-sm">No items yet.</div>'; return; }
+    arr.forEach(function(it,idx){
+      var totalHP=(it.material&&it.material.hp)||it.hp||0;
+      var curHP=Math.min(totalHP, (typeof it.currentHp==='number'?it.currentHp:totalHP));
+      var hpPct=totalHP? Math.max(0,Math.min(100,(curHP/totalHP)*100)) : 0;
+      var crafted=!!it.crafted;
+      var row=document.createElement('div'); row.className='lib-item repair-card';
+      row.innerHTML='<div>'+
+        '<div class="lib-name">'+it.name+' '+(crafted?'<span class="badge">Crafted</span>':'<span class="badge">In Progress</span>')+'</div>'+
+        '<div class="note-sm">'+((it.schematic&&(it.schematic.type||it.schematic.form))||'Item')+' • Material: '+(it.material?it.material.name:'—')+(it.material?(' ('+it.material.rarity+' · HP '+(it.material.hp||0)+')'):'')+'</div>'+
+        '<div class="bar-row" style="margin-top:8px;"><span class="note-sm">Durability:</span>'+
+        '<div class="hp-rail" style="flex:1"><div class="hp-fill" style="width:'+hpPct+'%"></div></div>'+
+        '<span class="note-sm" id="hpText-'+it.id+'">'+curHP+'/'+totalHP+'</span>'+
+        '<button class="btn-primary btn-ghost" id="hpM-'+it.id+'">–</button>'+
+        '<button class="btn-primary btn-ghost" id="hpP-'+it.id+'">+</button></div>'+
+        (crafted?'':'<div class="bar-row" style="margin-top:6px;"><span class="note-sm">Craft:</span><div class="craft-rail" style="flex:1"><div class="craft-fill" style="width:'+Math.min(100, ((it.craftProgress||0)/Math.max(1,(it.craftDaysRequired||1)))*100)+'%"></div></div><span class="note-sm">'+(it.craftProgress||0)+'/'+(it.craftDaysRequired||0)+'</span><button class="btn-primary btn-ghost" id="crM-'+it.id+'">–</button><button class="btn-primary btn-ghost" id="crP-'+it.id+'">+</button></div>')+
+      (Array.isArray(it.enchants)&&it.enchants.length? '<div class="note-sm" style="margin-top:6px;">Enchants: '+it.enchants.join(', ')+'</div>':'' )+
+      (Array.isArray(it.weaves)&&it.weaves.length? '<div class="note-sm">Weave: '+it.weaves.join(', ')+'</div>':'' )+
+      (Array.isArray(it.flaws)&&it.flaws.length? '<div class="note-sm" style="color:#ffbdbd">Flaws: '+it.flaws.join(', ')+'</div>':'' )+
+      '</div>';
+      var del=document.createElement('button'); del.className='lib-del'; del.textContent='Delete';
+      del.onclick=function(){ var a=reps(); a.splice(idx,1); setReps(a); };
+      row.appendChild(del); wrap.appendChild(row);
+      // HP controls
+      $('#hpM-'+it.id).addEventListener('click',function(){
+        var a=reps(); var cap=(a[idx].material&&a[idx].material.hp)||a[idx].hp||0;
+        var cur=(typeof a[idx].currentHp==='number'?a[idx].currentHp:cap);
+        a[idx].currentHp=Math.max(0,cur-1); setReps(a);
+      });
+      $('#hpP-'+it.id).addEventListener('click',function(){
+        var a=reps(); var cap=(a[idx].material&&a[idx].material.hp)||a[idx].hp||0;
+        var cur=(typeof a[idx].currentHp==='number'?a[idx].currentHp:cap);
+        a[idx].currentHp=Math.min(cap,cur+1); setReps(a);
+      });
+      // Crafting progress
+      if(!crafted){
+        $('#crM-'+it.id).addEventListener('click',function(){
+          var a=reps(); a[idx].craftProgress=Math.max(0,(a[idx].craftProgress||0)-1);
+          if(a[idx].craftProgress>=a[idx].craftDaysRequired){ a[idx].crafted=true; }
+          setReps(a);
+        });
+        $('#crP-'+it.id).addEventListener('click',function(){
+          var a=reps(); a[idx].craftProgress=Math.min(a[idx].craftDaysRequired||0,(a[idx].craftProgress||0)+1);
+          if(a[idx].craftProgress>=a[idx].craftDaysRequired){ a[idx].crafted=true; }
+          setReps(a);
+        });
+      }
+    });
+  }
+  window.renderRepairs=renderRepairs;
+
+  // Add item to repairs
+  $('#repAdd').addEventListener('click',function(){
+    var n=$('#repName').value.trim(); if(!n) return;
+    var matName=$('#repMat').value; var hpIn=parseInt($('#repHP').value,10)||0;
+    var mat=null; if(matName){ var hit=mats().find(function(m){return m.name===matName}); if(hit) mat={name:hit.name,rarity:hit.rarity,hp:hit.hp}; }
+    var totalHP=(mat&&mat.hp)||hpIn||0;
+    var item={id:'rp-'+nowId(),name:n,material:mat,hp:totalHP,currentHp:totalHP,crafted:true,createdAt:new Date().toISOString()};
+    var a=reps(); a.unshift(item); setReps(a);
+    $('#repName').value=''; $('#repHP').value='';
+  });
+
+  // initial render
+  document.addEventListener('DOMContentLoaded',function(){
+    renderMaterials(); renderComponents(); renderSchematics(); renderRepairs();
+    if(typeof window.mountForge==='function') window.mountForge();
+  });
+
+  // expose minimal API for other modules
+  window._fw = { load:load, save:save, LSK:LSK,
+    mats:mats, comps:comps, reps:reps, setReps:setReps,
+    schemW:schemW, schemA:schemA, schemS:schemS };
+})();
+</script>
+
+<script>
+/* ===== Forge Data (tables + calculators) ===== */
+(function(){
+  "use strict";
+  var W_SIZE=[
+    {key:'finesse',name:'Finesse',dc:4,day:1},
+    {key:'heavy',name:'Heavy',dc:-2,day:1},
+    {key:'light',name:'Light',dc:3,day:1},
+    {key:'onehand',name:'One-handed',dc:0,day:1},
+    {key:'reach',name:'Reach',dc:4,day:1},
+    {key:'twohand',name:'Two-handed',dc:-2,day:1}
+  ];
+  var W_RANGE_MELEE=[{key:'thrown',name:'Thrown (20/60)',dc:3,day:1,stack:false}];
+  var W_RANGE_RANGED=[
+    {key:'ammo',name:'Ammunition (20/60)',dc:4,day:1,stack:false},
+    {key:'loading',name:'Loading (1/turn)',dc:-2,day:0,stack:false},
+    {key:'range+',name:'+Range (30/90) stack x5',dc:1,day:1,stack:true,max:5},
+    {key:'retract',name:'Retractable (rope/chain)',dc:3,day:1,stack:false}
+  ];
+  var W_DAMAGE=[
+    {key:'d4',name:'d4',dc:1},
+    {key:'d6',name:'d6',dc:2},
+    {key:'d8',name:'d8',dc:3},
+    {key:'d10',name:'d10',dc:4,martialOnly:true},
+    {key:'d12',name:'d12',dc:5,martialOnly:true}
+  ];
+  var W_DMG_TYPES=['Slashing','Piercing','Bludgeoning'];
+  var W_PROPS=[
+   
+
+  ];
+  var W_ADDONS=[
+    {key:'ap',name:'Armour Piercing',dc:2},
+    {key:'crush',name:'Crushing Weight',dc:2},
+    {key:'greater',name:'Greater Weapon',dc:6},
+    {key:'honed',name:'Honed',dc:4},
+    {key:'inspiring',name:'Inspiring',dc:3},
+    {key:'keen',name:'Keen Edge',dc:4},
+    {key:'linger',name:'Lingering Wounds',dc:5},
+    {key:'silent',name:'Silent Shot',dc:4},
+    {key:'sup',name:'Superior Weapon',dc:8},
+    {key:'supreme',name:'Supreme Weapon',dc:10}
+  ];
+
+  var A_AC_DC={1:2,2:4,3:6,4:8,5:10,6:12,7:14,8:16};
+  var A_PROPS=[
+    {key:'cushioned',name:'Cushioned',dc:3},
+    {key:'pocket',name:'Hidden Pocket',dc:1},
+    {key:'pauldrons',name:'Pauldrons',dc:1},
+    {key:'showy',name:'Showy',dc:2},
+    {key:'spikes',name:'Spikes',dc:2},
+    {key:'springy',name:'Springy',dc:3},
+    {key:'subtle',name:'Subtle',dc:1},
+    {key:'mount',name:'Weapon Mount',dc:4},
+    {key:'soakS',name:'Soak (Slashing)',dc:3,group:'soak'},
+    {key:'soakB',name:'Soak (Bludgeoning)',dc:3,group:'soak'},
+    {key:'soakP',name:'Soak (Piercing)',dc:3,group:'soak'}
+  ];
+  var A_ADDONS=[
+    {key:'aquatic',name:'Aquatic',dc:5},
+    {key:'camo',name:'Camouflaged',dc:3},
+    {key:'elemres',name:'Elemental Resistance',dc:6},
+    {key:'gprotect',name:'Greater Protection',dc:6},
+    {key:'intim',name:'Intimidating',dc:3},
+    {key:'lightwt',name:'Lightweight (Mithral)',dc:2},
+    {key:'magnetic',name:'Magnetic',dc:5},
+    {key:'sturdy',name:'Sturdy (Dwarf Steel)',dc:4},
+    {key:'sprotect',name:'Superior Protection',dc:8}
+  ];
+
+  var S_AC_DC={1:4,2:6,3:8};
+  var S_PROPS=[
+    {key:'deploy',name:'Deployable',dc:2,req:{notForm:/tower/i}},
+    {key:'hidden',name:'Hidden Compartment',dc:2,req:{notForm:/buckler/i,notWith:['deploy']}},
+    {key:'plant',name:'Plantable',dc:3,req:{notForm:/buckler/i}},
+    {key:'throw',name:'Throw (1d6, 20/60)',dc:2},
+    {key:'spikey',name:'Spikey (1d6 pierce)',dc:2}
+  ];
+    var S_ADDONS=[
+    {key:'bashing',name:'Bashing',dc:5},
+    {key:'blessed',name:'Blessed',dc:8},
+    {key:'bracing',name:'Bracing',dc:5},
+    {key:'buffeting',name:'Buffeting',dc:8},
+    {key:'elemres',name:'Elemental Resistance',dc:5},
+    {key:'gshield',name:'Greater Shielding',dc:8},
+    {key:'intim',name:'Intimidating',dc:4},
+    {key:'reflex',name:'Reflexive',dc:7},
+    {key:'ssuper',name:'Superior Shielding',dc:8}
+  ];
+
+  function stepsCount(cat){ if(cat==='Weapon') return 9; if(cat==='Armour') return 7; if(cat==='Shield') return 6; return 7; }
+
+
+  function calcWeapon(state){
+    var days=0, dc=0;
+    var sz=W_SIZE.find(function(x){return x.key===state.sel.size}); if(sz){days+=sz.day; dc+=sz.dc;}
+    var list=state.sel.ranged?W_RANGE_RANGED:W_RANGE_MELEE;
+    Object.keys(state.sel.range||{}).forEach(function(k){
+      var val=state.sel.range[k]; var def=list.find(function(x){return x.key===k});
+      if(def){ if(def.stack){ if(val>0){ days+=def.day; dc+=def.dc*val; } } else { if(val>0){ days+=def.day; dc+=def.dc; } } }
+    });
+    var dd=W_DAMAGE.find(function(d){return d.key===state.sel.dmgDie}); if(dd){ days+=1; dc+=dd.dc; }
+    (state.sel.props||new Set()).forEach(function(k){ var p=W_PROPS.find(function(x){return x.key===k}); if(p){ days+=1; dc+=p.dc; } });
+    (state.sel.addon||new Set()).forEach(function(k){ var a=W_ADDONS.find(function(x){return x.key===k}); if(a){ days+=1; dc+=a.dc; } });
+    return {days:days,dc:dc};
+  }
+  function calcArmour(state){
+    var days=0, dc=0; var ac=state.sel.ac||1; days+=ac; dc+=(A_AC_DC[ac]||0);
+    if((state.schem&&state.schem.class)==='Heavy'){ dc-=2; }
+    if((state.schem&&state.schem.class)==='Medium' && state.sel.mediumStr){ dc-=2; }
+    (state.sel.props||new Set()).forEach(function(k){ var p=A_PROPS.find(function(x){return x.key===k}); if(p){ days+=1; dc+=p.dc; } });
+    (state.sel.addons||new Set()).forEach(function(k){ var a=A_ADDONS.find(function(x){return x.key===k}); if(a){ days+=1; dc+=a.dc; } });
+    return {days:days,dc:dc};
+  }
+  function calcShield(state){
+    var days=0, dc=0; var ac=state.sel.ac||1; days+=ac; dc+=(S_AC_DC[ac]||0);
+    (state.sel.props||new Set()).forEach(function(k){ var p=S_PROPS.find(function(x){return x.key===k}); if(p){ days+=1; dc+=p.dc; } });
+    (state.sel.addons||new Set()).forEach(function(k){ var a=S_ADDONS.find(function(x){return x.key===k}); if(a){ days+=1; dc+=a.dc; } });
+    return {days:days,dc:dc};
+  }
+
+    window.ForgeData={
+    W_SIZE:W_SIZE,W_RANGE_MELEE:W_RANGE_MELEE,W_RANGE_RANGED:W_RANGE_RANGED,
+    W_DAMAGE:W_DAMAGE,W_DMG_TYPES:W_DMG_TYPES,W_PROPS:W_PROPS,W_ADDONS:W_ADDONS,
+    A_AC_DC:A_AC_DC,A_PROPS:A_PROPS,A_ADDONS:A_ADDONS,
+    S_AC_DC:S_AC_DC,S_PROPS:S_PROPS,S_ADDONS:S_ADDONS,
+    stepsCount:stepsCount, calc:{Weapon:calcWeapon,Armour:calcArmour,Shield:calcShield}
+  };
+})();
+</script>
+
+
+
+<script>
+(function(){
+  // --- Weapon properties ---
+  const W_PROP = {
+    tempered:{desc:"Adds a constant +1 to the weapon’s damage rolls."},
+    weighted:{desc:"The weapon’s heft adds +1d4 additional damage on each hit."},
+    silent:{desc:"Attacks from this weapon make no audible sound that would reveal the attacker’s position."},
+    brutal:{desc:"On a critical hit, roll an extra 1d4 damage."},
+    sturdy:{desc:"The weapon is hard to break; treat it as having +3 item HP for breakage tests."},
+    precision:{desc:"Ranged attacks made within 30 feet have advantage."},
+    blinding:{desc:"On a critical hit, the target must succeed on a CON save or be blinded for 1 minute (repeat save at end of turns)."},
+    reinforced:{desc:"You have advantage on checks to avoid being disarmed."},
+    balance:{desc:"You can use DEX instead of STR for the weapon’s damage."},
+    defreact:{desc:"As a reaction when targeted by an attack you can gain +1 AC against that attack."},
+    critmax:{desc:"Once per encounter, one of your critical hits deals maximum possible damage."},
+    lacerate:{desc:"On a hit, the target has a 20% chance to begin bleeding (1d4 damage each round) until magically healed or treated (DC 10)."},
+    maim:{desc:"On a hit, the target makes a CON save (DC 12) or its speed becomes 0 until the end of its next turn; it also has disadvantage on DEX saves during that time."},
+    disarm:{desc:"As a bonus action against a creature in reach, you can attempt to disarm it."},
+    dwarfmade:{desc:"You gain +1 to attack rolls against goblinoids and beasts."},
+    elfmade:{desc:"Projectiles fly farther (+100 ft range). You have advantage to conceal or smoothly draw this weapon."},
+    execution:{desc:"When attacking a prone creature in melee, a normal hit counts as a critical and deals max damage."},
+    undisarmed:{desc:"You cannot be disarmed unless you are incapacitated."},
+    whirl:{desc:"When a creature enters your reach, you may make one melee attack against it as a reaction."},
+    prepare:{desc:"Spend up to half your movement to set your stance; your next hit this turn deals +1d6 slashing."},
+    pierce:{desc:"Once each round, a deep wound grants your follow-up attacks +2 piercing damage against that target."},
+    focus:{desc:"As a bonus action, you steady yourself; your next attack this turn has advantage."},
+    riposte:{desc:"When a creature hits you with a melee attack, you can make one melee attack against it as a reaction."},
+    pommel:{desc:"As part of the Attack action you can deal an extra 1d4 bludgeoning damage with a pommel strike."},
+    parry:{desc:"While you take the Dodge action, you gain an additional +1 AC until your next turn."},
+    flourish:{desc:"Bonus-action feint: the target makes a WIS save against your attack roll; on a failure, your next melee attack against it has advantage."},
+    devastate:{desc:"On a hit you may attempt to knock the target prone (STR save)."},
+    impact:{desc:"Hits deal an extra 1d4 bludgeoning damage from raw impact."},
+    nimble:{desc:"Once per round you may add your DEX modifier to damage a second time."},
+    graze:{desc:"If you miss by only 1–2, the attack deals a flat 2 damage."},
+    vex:{desc:"When you hit a creature, the next attack against it this turn has advantage."},
+    nick:{desc:"On a hit you may make a light off-hand attack as a bonus action."},
+    topple:{desc:"On a hit, the target must succeed on a STR save or fall prone."},
+    slow:{desc:"On a hit, the target’s speed is reduced by 10 ft until the end of its next turn."},
+    push:{desc:"On a hit, you can push the target up to 10 ft on a failed STR save."},
+    sap:{desc:"On a hit, the target has −1 to attack rolls until the end of its next turn."},
+    cleave:{desc:"When you hit, a second creature within reach takes damage equal to your ability modifier."},
+    flex:{desc:"If you wield the weapon with two hands, increase its damage die by one step."}
+  };
+
+  // --- Weapon add-ons ---
+  const W_ADD = {
+    ap:{desc:"Treat targets as though their armor/cover contributes 2 less AC against this weapon."},
+    crush:{desc:"You deal +2 damage to objects and structures and have improved results on shove attempts."},
+    greater:{desc:"+1 to attack rolls and +1 to damage rolls with this weapon."},
+    honed:{desc:"+1 to attack rolls with this weapon."},
+    inspiring:{desc:"When you crit, one ally within 30 ft gains temporary HP equal to your proficiency bonus."},
+    keen:{desc:"Expand the weapon’s critical range by 1 (e.g., 20 → 19–20)."},
+    linger:{desc:"On a critical hit, the injury imposes disadvantage on one ability’s checks (DM chooses) until treated."},
+    silent:{desc:"Ranged attacks are near-silent and do not reveal your location by sound."},
+    sup:{desc:"+2 to attack rolls and +2 to damage rolls with this weapon."},
+    supreme:{desc:"+3 to attack rolls and +3 to damage rolls with this weapon."}
+  };
+
+  // --- Armour properties ---
+  const A_PROP = {
+    cushioned:{desc:"Reduce fall damage you take by 1d6 (minimum 0)."},
+    pocket:{desc:"Includes a concealed pocket; checks to find it are made at disadvantage."},
+    pauldrons:{desc:"Broad pauldrons grant +2 to checks to resist shove or falling debris."},
+    showy:{desc:"Finery and finish confer +1 to Persuasion checks when status matters."},
+    spikes:{desc:"A creature grappling you takes 1 piercing damage at the start of its turn."},
+    springy:{desc:"Standing from prone costs only 5 ft of movement instead of half your speed."},
+    subtle:{desc:"The cut passes as clothing at a glance; easier to conceal beneath outerwear."},
+    mount:{desc:"Has a dock to mount a light weapon or gadget on the cuirass/gauntlet."},
+    soakS:{desc:"Reduce the first slashing damage you take each round by 2."},
+    soakB:{desc:"Reduce the first bludgeoning damage you take each round by 2."},
+    soakP:{desc:"Reduce the first piercing damage you take each round by 2."}
+  };
+
+  // --- Armour add-ons ---
+  const A_ADD = {
+    aquatic:{desc:"Armor is water-tight and streamlined; no extra penalty to swim checks."},
+    camo:{desc:"Advantage on Stealth checks in matching terrain (DM adjudicates)."},
+    elemres:{desc:"Choose one element; you have resistance to that damage type while wearing this armor."},
+    gprotect:{desc:"Grants an additional +1 AC (stacks with base armor AC)."},
+    intim:{desc:"+1 to Intimidation checks while the armor is visible."},
+    lightwt:{desc:"Counts as one category lighter for STR minimums and Stealth penalties."},
+    magnetic:{desc:"Advantage to catch or deflect small metal projectiles; can retrieve small metal items at short range."},
+    sturdy:{desc:"Reinforced plates: +2 item HP; advantage on checks to break the armor."},
+    sprotect:{desc:"Grants an additional +2 AC (stacks with base armor AC)."}
+  };
+
+  // --- Shield properties ---
+  const S_PROP = {
+    deploy:{desc:"You can brace the shield to count as heavy cover; while braced you are effectively immobile."},
+    hidden:{desc:"Includes a small secret compartment (not available on Bucklers; conflicts with Deploy)."},
+    plant:{desc:"You can plant the shield as an object to give yourself or an adjacent ally half-cover (not Buckler)."},
+    throw:{desc:"The shield can be thrown (1d6 damage, range 20/60). Returning requires a separate property or DM approval."},
+    spikey:{desc:"Shield strikes deal an extra 1d6 piercing damage where applicable."}
+  };
+
+  // --- Shield add-ons ---
+  const S_ADD = {
+    bashing:{desc:"When you shove or strike with the shield, add +1d4 damage."},
+    blessed:{desc:"Once per day, a burst of radiance can grant an ally within 30 ft +1d4 to one saving throw."},
+    bracing:{desc:"While set, you have advantage on checks to avoid being pushed or otherwise forcibly moved."},
+    buffeting:{desc:"Bonus action: emit a short cone of wind; creatures in it must make a STR save or be pushed 5 ft."},
+    elemres:{desc:"Choose one element; while you actively wield the shield you have resistance to that damage."},
+    gshield:{desc:"+1 AC while the shield is actively raised/wielded."},
+    intim:{desc:"+1 to Intimidation checks while you brandish the shield."},
+    reflex:{desc:"Reaction on a ranged hit: reduce the damage by 1d8 and you may deflect at DM discretion."},
+    ssuper:{desc:"+2 AC while the shield is actively raised/wielded."}
+  };
+
+  window.ForgeGlossary = { W_PROP, W_ADD, A_PROP, A_ADD, S_PROP, S_ADD };
+})();
+</script>
+
+
+
+<script>
+/* ===== Crafting Forge (stepper, one-step-at-a-time) ===== */
+(function(){
+  "use strict";
+  var $=function(s,sc){return (sc||document).querySelector(s)};
+  var $$=function(s,sc){return Array.prototype.slice.call((sc||document).querySelectorAll(s))};
+  var ci=function(s){return (s||"").trim().toLowerCase()};
+  var nowId=function(){return Date.now()+Math.floor(Math.random()*9999)};
+  var LSK=_fw.LSK, load=_fw.load, save=_fw.save;
+  var mats=_fw.mats, comps=_fw.comps, reps=_fw.reps, setReps=_fw.setReps;
+  var schemW=_fw.schemW, schemA=_fw.schemA, schemS=_fw.schemS;
+
+  function baseFromSchematic(cat,schem){
+    if(cat==='Weapon'){ var k=(schem&&schem.kind||'').toLowerCase(); return /martial/.test(k)?{days:3,dc:5}:{days:2,dc:3}; }
+    if(cat==='Armour') return {days:2,dc:5};
+    if(cat==='Shield') return {days:2,dc:5};
+    return {days:0,dc:0};
+  }
+  function rarityAdj(r){
+    if(r==='Common') return {days:1,dc:1};
+    if(r==='Uncommon') return {days:1,dc:2};
+    if(r==='Rare') return {days:2,dc:3};
+    if(r==='Very Rare') return {days:2,dc:4};
+    if(r==='Legendary') return {days:4,dc:5};
+    return {days:0,dc:0};
+  }
+
+  function mountForge(){
+    var host=$('#forgeStepsWrap'); if(!host) return;
+    host.innerHTML=[
+      '<div id="f-step1" class="step">',
+        '<div class="kicker">Step 1</div><h3>Choose Category</h3>',
+        '<div class="chips" id="f-cat"><div class="chip" data-cat="Weapon">Weapon</div><div class="chip" data-cat="Armour">Armour</div><div class="chip" data-cat="Shield">Shield</div></div>',
+        '<div class="controls" style="margin-top:8px;"><button class="btn-primary" id="f-next1" disabled>Next</button></div>',
+      '</div>',
+      '<div id="f-step2" class="step hidden">',
+        '<div class="kicker">Step 2</div><h3>Choose a Schematic</h3>',
+        '<select id="f-schem" style="min-width:260px;"></select>',
+        '<div class="note-sm" id="f-schemNeeds" style="margin-top:6px;"></div>',
+        '<div class="controls" style="margin-top:8px;"><button class="btn-primary btn-ghost" id="f-back2">Back</button><button class="btn-primary" id="f-next2" disabled>Next</button></div>',
+      '</div>',
+      '<div id="f-step3" class="step hidden">',
+        '<div class="kicker">Step 3</div><h3>Choose a Material</h3>',
+        '<select id="f-mat" style="min-width:260px;"></select>',
+        '<div class="note-sm" id="f-matInfo" style="margin-top:6px;"></div>',
+        '<div class="controls" style="margin-top:8px;"><button class="btn-primary btn-ghost" id="f-back3">Back</button><button class="btn-primary" id="f-next3" disabled>Next</button></div>',
+      '</div>',
+      '<div id="f-step4" class="step hidden">',
+        '<div class="kicker">Step 4</div><h3>Custom Name <span class="note-sm">(optional)</span></h3>',
+        '<input id="f-name" placeholder="e.g., Grim Shard">',
+        '<div class="controls" style="margin-top:8px;"><button class="btn-primary btn-ghost" id="f-back4">Back</button><button class="btn-primary" id="f-next4">Next</button></div>',
+      '</div>',
+      '<div id="f-dyn"></div>',
+      '<div class="progress" style="margin-top:10px;">',
+        '<div class="progress-rail"><div class="progress-fill" id="forgeProgress" style="width:0%"></div></div>',
+        '<div class="steps" id="forgeSteps"></div>',
+        '<div class="totals"><div class="tally">Days: <span id="daysTally">0</span></div><div class="tally">DC: <span id="dcTally">0</span></div></div>',
+      '</div>'
+    ].join('');
+
+    var state={cat:null,schem:null,mat:null,name:'',sel:{}};
+
+    function stepUI(n,total){
+      var fill=document.getElementById('forgeProgress');
+      var pills=document.getElementById('forgeSteps');
+      var t=total||window.ForgeData.stepsCount(state.cat);
+      fill.style.width=((n-1)/Math.max(1,(t-1))*100)+'%';
+      pills.innerHTML='';
+      for(var i=1;i<=t;i++){ var p=document.createElement('div'); p.className='step-pill'+(i===n?' active':''); p.textContent='Step '+i; pills.appendChild(p); }
+    }
+    function updateTotals(){
+      var base=baseFromSchematic(state.cat,state.schem); var days=base.days, dc=base.dc;
+      if(state.mat){ var r=rarityAdj(state.mat.rarity); days+=r.days; dc+=r.dc; }
+      if(window.ForgeData && window.ForgeData.calc[state.cat]){ var add=window.ForgeData.calc[state.cat](state); days+=add.days; dc+=add.dc; }
+      document.getElementById('daysTally').textContent=days; document.getElementById('dcTally').textContent=dc;
+    }
+    function show(ids,cur){
+      ['#f-step1','#f-step2','#f-step3','#f-step4'].forEach(function(id){ var el=$(id); if(el) el.classList.add('hidden') });
+      ids.forEach(function(id){ var el=$(id); if(el) el.classList.remove('hidden') });
+      stepUI(cur);
+    }
+
+    // Step 1
+    document.getElementById('f-cat').addEventListener('click',function(e){
+      var c=e.target.closest('.chip'); if(!c) return;
+      $$('#f-cat .chip').forEach(function(x){x.classList.remove('active')}); c.classList.add('active');
+      state.cat=c.getAttribute('data-cat'); document.getElementById('f-next1').disabled=false; updateTotals();
+    });
+    document.getElementById('f-next1').addEventListener('click',function(){ show(['#f-step2'],2); renderSchemSelect(); updateTotals(); });
+
+    // Step 2
+    function listSchems(){ if(state.cat==='Weapon') return schemW(); if(state.cat==='Armour') return schemA(); return schemS(); }
+    function needsText(s){ return (s&&s.needs&&s.needs.length)?('Needs: '+s.needs.join(', ')):'No special components'; }
+    function renderSchemSelect(){
+      var sel=document.getElementById('f-schem'); var data=listSchems()||[];
+      sel.innerHTML='<option value="" disabled selected>Select a schematic</option>'+data.map(function(s){ var tag=s.kind||s.class||s.form||''; return '<option value="'+s.id+'">'+s.name+(tag?(' — '+tag):'')+'</option>' }).join('');
+      document.getElementById('f-schemNeeds').textContent=''; document.getElementById('f-next2').disabled=true;
+      sel.onchange=function(){
+        var pick=data.find(function(x){return String(x.id)===String(sel.value)});
+        state.schem=pick||null;
+        document.getElementById('f-schemNeeds').textContent=pick?needsText(pick):'';
+        var have=_fw.comps(); var ok=true;
+        (pick&&pick.needs||[]).forEach(function(n){
+          var hit=have.find(function(c){return ci(c.name)===ci(n)}); if(!hit||(hit.qty||0)<1) ok=false;
+        });
+        document.getElementById('f-next2').disabled=!pick || !ok;
+        if(!ok){ document.getElementById('f-schemNeeds').textContent += ' — Missing required component(s).'; }
+        updateTotals();
+      };
+    }
+    document.getElementById('f-back2').addEventListener('click',function(){ show(['#f-step1'],1); updateTotals(); });
+    document.getElementById('f-next2').addEventListener('click',function(){ show(['#f-step3'],3); renderMatSelect(); updateTotals(); });
+
+    // Step 3
+    function renderMatSelect(){
+      var sel=document.getElementById('f-mat');
+      var data=mats().filter(function(m){return (m.qty||0)>0});
+      sel.innerHTML='<option value="" disabled selected>Select a material (Qty ≥ 1)</option>'+data.map(function(m,i){
+        return '<option value="'+i+'">'+m.name+' ('+m.rarity+') • HP '+(m.hp||0)+' • Qty '+(m.qty||0)+'</option>';
+      }).join('');
+      document.getElementById('f-matInfo').textContent=''; document.getElementById('f-next3').disabled=true;
+      sel.onchange=function(){
+        var m=data[parseInt(sel.value,10)];
+        state.mat=m||null;
+        document.getElementById('f-matInfo').textContent=m?(m.desc||''):'';
+        document.getElementById('f-next3').disabled=!m;
+        updateTotals();
+      };
+    }
+    document.getElementById('f-back3').addEventListener('click',function(){ show(['#f-step2'],2); updateTotals(); });
+    document.getElementById('f-next3').addEventListener('click',function(){ show(['#f-step4'],4); updateTotals(); });
+
+    // Step 4
+    document.getElementById('f-name').addEventListener('input',function(e){ state.name=(e.target.value||'').trim(); updateTotals(); });
+    document.getElementById('f-back4').addEventListener('click',function(){ show(['#f-step3'],3); updateTotals(); });
+    document.getElementById('f-next4').addEventListener('click',function(){
+  var dyn=document.getElementById('f-dyn'); 
+  dyn.innerHTML='';
+
+  if(state.cat==='Weapon'){
+    buildWeapon(dyn);
+    // Weapon already wired earlier with showStep('f-w5')
+  }
+
+  if(state.cat==='Armour'){
+    buildArmour(dyn);
+    // show first Armour page and enable its Next
+    showStep('f-a5');
+    stepUI(5);
+    // enable the Step-5 Next button (robust selector in case id differs)
+    var nA = document.getElementById('a5n') || document.querySelector('#f-a5 .btn-primary:not(.btn-ghost)');
+    if(nA) nA.disabled = false;
+if(nA) nA.onclick = function(){ showStep('f-a6'); stepUI(6); };
+var nA6 = document.getElementById('a6n') || document.querySelector('#f-a6 .btn-primary:not(.btn-ghost)');
+if(nA6){ nA6.disabled = false; nA6.onclick = function(){ showStep('f-a7'); stepUI(7); }; }
+
+
+  }
+
+  if(state.cat==='Shield'){
+    buildShield(dyn);
+    // show first Shield page and enable its Next
+    showStep('f-s5');
+    stepUI(5);
+    var nS = document.getElementById('s5n') || document.querySelector('#f-s5 .btn-primary:not(.btn-ghost)');
+    if(nS) nS.disabled = false;
+if(nS) nS.onclick = function(){ showStep('f-s6'); stepUI(6); };
+var cS = document.getElementById('s6c') || document.querySelector('#f-s6 .btn-primary:not(.btn-ghost)');
+if(cS){ cS.disabled = false; cS.onclick = craftItem; }
+
+
+  }
+
+  document.getElementById('f-step4').classList.add('hidden');
+  updateTotals();
+});
+
+
+   function makeStep(host,id,kicker,title,bodyHTML,controlsHTML){
+  const d=document.createElement('div');
+  d.id=id;
+  d.className='dyn-step'; // hidden by CSS until we mark it .active
+  d.innerHTML =
+    '<div class="kicker">'+kicker+'</div><h3>'+title+'</h3>' +
+    '<div style="margin-top:6px;">'+(bodyHTML||'')+'</div>' +
+    '<div class="controls" style="margin-top:10px;">'+(controlsHTML||'')+'</div>';
+  host.appendChild(d);
+  return d;
+}
+
+function showStep(id){
+  const dynHost = document.getElementById('f-dyn');
+  if(dynHost){
+    dynHost.querySelectorAll('.dyn-step').forEach(el=>el.classList.remove('active'));
+  }
+  const step = document.getElementById(id);
+  if(step){ step.classList.add('active'); }
+}
+
+
+
+    function craftItem(){
+      if(!state.schem||!state.mat){ alert('Choose schematic and material.'); return; }
+      var need=(state.schem.needs||[]).map(function(n){return ci(n)}); var invC=_fw.comps(); var missing=[];
+      need.forEach(function(n){ var i=invC.findIndex(function(c){return ci(c.name)===n}); if(i<0||(invC[i].qty||0)<1) missing.push(n); });
+      if(missing.length){ alert('Missing component(s): '+missing.join(', ')); return; }
+      var invM=_fw.mats(); var im=invM.findIndex(function(m){return m.name===state.mat.name}); if(im<0||(invM[im].qty||0)<1){ alert('Material out of stock.'); return; }
+      invM[im].qty=Math.max(0,(invM[im].qty||0)-1); save(LSK.MAT,invM);
+      need.forEach(function(n){ var j=invC.findIndex(function(c){return ci(c.name)===n}); if(j>-1){ invC[j].qty=Math.max(0,(invC[j].qty||0)-1); } }); save(LSK.COMP,invC);
+
+      var days=parseInt(document.getElementById('daysTally').textContent,10)||0;
+      var dc=parseInt(document.getElementById('dcTally').textContent,10)||0;
+      var nm= state.name || (state.schem&&state.schem.name) || (state.cat+' Item');
+      var mat={name:state.mat.name,rarity:state.mat.rarity,hp:state.mat.hp};
+      var item={ id:'rp-'+nowId(), name:nm,
+        schematic:(function(){ var o={type:state.cat}; for(var k in state.schem){ if(Object.prototype.hasOwnProperty.call(state.schem,k)) o[k]=state.schem[k]; } return o; })(),
+        material:mat, hp:mat.hp, currentHp:mat.hp, crafted:false, craftDaysRequired:days, craftProgress:0, craftDC:dc, selections:JSON.parse(JSON.stringify(state.sel)), createdAt:new Date().toISOString()
+      };
+      var a=reps(); a.unshift(item); setReps(a);
+      if(window.FX&&typeof window.FX.playCraft==='function') window.FX.playCraft();
+      document.querySelector('.tab-btn[data-tab="#repairs"]').click();
+      setTimeout(function(){ mountForge(); }, 50);
+
+
+    }
+const W_PROPS = [
+  {key:'tempered',    name:'Tempered Metal — +1 to damage rolls.',                              dc:4},
+  {key:'weighted',    name:'Weighted — +1d4 damage due to heft.',                               dc:6},
+  {key:'silent',      name:'Silent-Strike — Attacks make no audible sound.',                    dc:3},
+  {key:'brutal',      name:'Brutal — Critical hits deal an extra 1d4 damage.',                  dc:3},
+  {key:'sturdy',      name:'Sturdy — +3 item HP (harder to break).',                            dc:2},
+  {key:'precision',   name:'Precision — Advantage on ranged attacks within 30 ft.',             dc:5},
+  {key:'blinding',    name:'Blinding — On a critical hit: Con save or blinded (1 min).',        dc:4},
+  {key:'reinforced',  name:'Reinforced Grip — Advantage on checks to keep your grip.',          dc:2},
+  {key:'balance',     name:'Balancepoint — Use DEX for damage instead of STR.',                 dc:4},
+  {key:'defreact',    name:'Defense (Reaction) — Reaction: +1 AC vs one incoming attack.',      dc:3},
+  {key:'critmax',     name:'Critical (Max) — Once per encounter, a critical deals max damage.', dc:4},
+  {key:'lacerate',    name:'Lacerate — On hit: 20% bleed (1d4/round) until magic heal or DC10.',dc:4},
+  {key:'maim',        name:'Maiming-Strike — On hit: Con save (DC12) or speed 0 & disadv. DEX saves.', dc:5},
+  {key:'disarm',      name:'Disarm — Bonus action attempt to disarm an adjacent creature.',      dc:3},
+  {key:'dwarfmade',   name:'Dwarven-Made — +1 to attack vs goblinoids & beasts.',               dc:2},
+  {key:'elfmade',     name:'Elven-Made — +100 ft to thrown/projectiles & adv. to conceal weapon.', dc:3},
+  {key:'execution',   name:'Execution — Vs a prone target: treat hit as a critical (max dmg).', dc:5},
+  {key:'undisarmed',  name:'Undisarmed — Cannot be disarmed unless incapacitated.',             dc:3},
+  {key:'whirl',       name:'Whirling-Strike — Reaction: attack a creature that enters your reach.', dc:4},
+  {key:'prepare',     name:'Prepare — Half movement; gain +1d6 slashing on next hit.',          dc:3},
+  {key:'pierce',      name:'Piercing-Strike — (Once/round) Deep wound; follow-ups gain +2 piercing.', dc:3},
+  {key:'focus',       name:'Focus — Bonus action to gain advantage on your next attack this turn.', dc:3},
+  {key:'riposte',     name:'Riposte — Reaction: when hit by melee attack, make a counterattack.',   dc:3},
+  {key:'pommel',      name:'Pommel-Strike — As part of Attack: 1d4 bludgeon; target dazed.',    dc:3},
+  {key:'parry',       name:'Parry-Stance — When you Dodge, gain +1 AC until start of next turn.',   dc:3},
+  {key:'flourish',    name:'Flourish — Bonus action feint; WIS save as your attack roll or you gain adv. next melee attack.', dc:3},
+  {key:'devastate',   name:'Devastating-Swing — On hit, you may knock prone (STR save).',       dc:3},
+  {key:'impact',      name:'Impactful-Strike — +1d4 bludgeoning.',                               dc:5},
+  {key:'nimble',      name:'Nimble-Strikes — Add DEX mod twice to damage (once/round).',        dc:4},
+  {key:'graze',       name:'Graze (Mastery) — On a miss by 1–2, deal 2 damage.',                dc:3},
+  {key:'vex',         name:'Vex (Mastery) — On hit, next attack vs that target this turn has advantage.', dc:4},
+  {key:'nick',        name:'Nick (Mastery) — On hit, make a light off-hand attack as bonus action.',   dc:4},
+  {key:'topple',      name:'Topple (Mastery) — On hit, target STR save or prone.',               dc:5},
+  {key:'slow',        name:'Slow (Mastery) — On hit, target speed −10 ft until end of next turn.',     dc:4},
+  {key:'push',        name:'Push (Mastery) — On hit, push target 10 ft on failed STR save.',     dc:4},
+  {key:'sap',         name:'Sap (Mastery) — On hit, target −1 to attack rolls until end of next turn.', dc:3},
+  {key:'cleave',      name:'Cleave (Mastery) — On hit, deal your mod damage to second creature within reach.', dc:5},
+  {key:'flex',        name:'Flex (Mastery) — If two-handed, increase damage die step (d8→d10).', dc:3}
+];
+window.ForgeData = window.ForgeData || {}; window.ForgeData.W_PROPS = W_PROPS;
+
+    /* ---------- Weapon dynamic steps (5..9) ---------- */
+    function buildWeapon(host){
+      state.sel={size:null,range:{},dmgDie:null,dmgType:null,props:new Set(),addon:new Set(),ranged:false,martial:false};
+      var kind=(state.schem&&state.schem.kind||'').toLowerCase(); state.sel.martial=/martial/.test(kind); state.sel.ranged=/ranged/.test(kind);
+
+      var s5=makeStep(host,'f-w5','Step 5','Size / Handling','<div id="w-size" class="chips"></div>','<button class="btn-primary btn-ghost" id="w5b">Back</button><button class="btn-primary" id="w5n" disabled>Next</button>');
+      var sizeRow=document.getElementById('w-size'); window.ForgeData.W_SIZE.forEach(function(o){ var c=document.createElement('div'); c.className='chip'; c.textContent=o.name; c.setAttribute('data-key',o.key); sizeRow.appendChild(c); });
+      sizeRow.addEventListener('click',function(e){ var chip=e.target.closest('.chip'); if(!chip) return; $$('#w-size .chip').forEach(function(x){x.classList.remove('active')}); chip.classList.add('active'); state.sel.size=chip.getAttribute('data-key'); document.getElementById('w5n').disabled=false; updateTotals(); });
+
+      var rlist= state.sel.ranged ? window.ForgeData.W_RANGE_RANGED : window.ForgeData.W_RANGE_MELEE;
+      var s6=makeStep(host,'f-w6','Step 6','Weapon Range','<div id="w-range" class="chips"></div>','<button class="btn-primary btn-ghost" id="w6b">Back</button><button class="btn-primary" id="w6n">Next</button>');
+      var rRow=document.getElementById('w-range'), counters={};
+      rlist.forEach(function(o){ var c=document.createElement('div'); c.className='chip'; c.textContent=o.name; c.setAttribute('data-key',o.key); rRow.appendChild(c); });
+      rRow.addEventListener('click',function(e){
+        var chip=e.target.closest('.chip'); if(!chip) return;
+        var key=chip.getAttribute('data-key'); var def=rlist.find(function(x){return x.key===key});
+        if(def && def.stack){
+          var cur=counters[key]||0; var next=(cur+1)>(def.max||5)?0:(cur+1); counters[key]=next; state.sel.range[key]=next;
+          chip.classList.toggle('active',next>0);
+          var base=def.name.replace(/ \(.*\)$/,''); chip.textContent=base+(next>0?(' (x'+next+')'):'');
+        }else{
+          var on=chip.classList.toggle('active'); state.sel.range[key]=on?1:0;
+        }
+        updateTotals();
+      });
+
+      var dieHTML=window.ForgeData.W_DAMAGE.map(function(o){return '<div class="chip" data-key="'+o.key+'">'+o.name+' <span class="badge">+'+o.dc+' DC</span></div>'}).join('');
+      var typeHTML=window.ForgeData.W_DMG_TYPES.map(function(t){return '<div class="chip" data-type="'+t+'">'+t+'</div>'}).join('');
+      var s7=makeStep(host,'f-w7','Step 7','Damage','<div class="note-sm">Picking a die adds +1 day.</div><div id="w-die" class="chips" style="margin-top:6px;">'+dieHTML+'</div><div class="note-sm" style="margin-top:8px;">Damage type</div><div id="w-dtype" class="chips">'+typeHTML+'</div>','<button class="btn-primary btn-ghost" id="w7b">Back</button><button class="btn-primary" id="w7n" disabled>Next</button>');
+      var dieRow=document.getElementById('w-die'), typeRow=document.getElementById('w-dtype');
+      function dmgEnable(){ document.getElementById('w7n').disabled=!(state.sel.dmgDie && state.sel.dmgType); }
+      dieRow.addEventListener('click',function(e){
+        var chip=e.target.closest('.chip'); if(!chip) return;
+        $$('#w-die .chip').forEach(function(x){x.classList.remove('active')}); chip.classList.add('active');
+        var k=chip.getAttribute('data-key'); var def=window.ForgeData.W_DAMAGE.find(function(d){return d.key===k});
+        if(def && def.martialOnly && !state.sel.martial){ chip.classList.remove('active'); state.sel.dmgDie=null; alert('This die requires a Martial weapon schematic.'); }
+        else { state.sel.dmgDie=k; }
+        dmgEnable(); updateTotals();
+      });
+      typeRow.addEventListener('click',function(e){ var chip=e.target.closest('.chip'); if(!chip) return; $$('#w-dtype .chip').forEach(function(x){x.classList.remove('active')}); chip.classList.add('active'); state.sel.dmgType=chip.getAttribute('data-type'); dmgEnable(); updateTotals(); });
+
+      var propsHTML=window.ForgeData.W_PROPS.map(function(p){return '<div class="chip" data-key="'+p.key+'">'+p.name+' <span class="badge">+'+p.dc+' DC</span></div>'}).join('');
+      var s8=makeStep(host,'f-w8','Step 8','Weapon Properties','<div class="note-sm">Each adds +1 day and its DC.</div><div id="w-props" class="chips" style="margin-top:6px;">'+propsHTML+'</div>','<button class="btn-primary btn-ghost" id="w8b">Back</button><button class="btn-primary" id="w8n">Next</button>');
+// build the properties list UI
+(function(){
+  var list = document.getElementById('w-props');
+  if(!list) return;
+  list.innerHTML = '';
+  var props = (window.ForgeData.W_PROPS || []);
+  props.forEach(function(p){
+    // row
+    var row = document.createElement('div');
+    var g = (window.ForgeGlossary?.W_PROP?.[p.key]) || {};
+var g = (window.ForgeGlossary && window.ForgeGlossary.W_PROP && window.ForgeGlossary.W_PROP[p.key]) || {};
+row.innerHTML =
+  '<div><div class="lib-name">' +
+    p.name + ' <span class="badge">+'+p.dc+' DC</span>' +
+    (g.desc ? ' — <span class="gloss-inline">'+g.desc+'</span>' : '') +
+  '</div></div>';
+
+
+
+
+    // checkbox
+    var box = document.createElement('div'); box.className='inline';
+    var cb = document.createElement('input'); cb.type='checkbox';
+    cb.checked = state.sel.props && state.sel.props.has(p.key);
+    cb.onchange = function(){
+      if(!state.sel.props) state.sel.props = new Set();
+      if(cb.checked) state.sel.props.add(p.key); else state.sel.props.delete(p.key);
+      updateTotals();
+    };
+    box.appendChild(cb); row.appendChild(box);
+    list.appendChild(row);
+  });
+})();
+
+      document.getElementById('w-props').addEventListener('click',function(e){ var chip=e.target.closest('.chip'); if(!chip) return; chip.classList.toggle('active'); var k=chip.getAttribute('data-key'); if(chip.classList.contains('active')) state.sel.props.add(k); else state.sel.props.delete(k); updateTotals(); });
+
+  var addonHTML = window.ForgeData.A_ADDONS.map(function(a){
+  var g = (window.ForgeGlossary && window.ForgeGlossary.A_ADD && window.ForgeGlossary.A_ADD[a.key]) || {};
+  return '<div class="lib-item"><div><div class="lib-name">'+
+    a.name + ' <span class="badge">+'+a.dc+' DC</span> <span class="badge">+1 day</span>' +
+    (g.desc ? ' — <span class="gloss-inline">'+g.desc+'</span>' : '') +
+  '</div></div><div class="inline"><input type="checkbox" data-key="'+a.key+'"></div></div>';
+}).join('');
+
+
+
+      var s9=makeStep(host,'f-w9','Step 9','Add Ons','<div class="note-sm">Optional.</div><div id="w-addons" class="lib-list" style="margin-top:8px;">'+addonHTML+'</div>','<button class="btn-primary btn-ghost" id="w9b">Back</button><button class="btn-primary" id="w9c">Craft</button>');
+showStep('f-w5');
+// Make Step 7's "Next" button become clickable once you interact with Step 7.
+document.getElementById('f-w7').addEventListener('click', function(){
+  var n = document.getElementById('w7n');
+  if(n) n.disabled = false;
+});
+
+
+// ——— One-at-a-time navigation for Weapon steps ———
+document.getElementById('w5b').onclick = function(){
+  // Step 4 is outside the dynamic container
+  document.getElementById('f-w5').classList.remove('active');
+  const s4 = document.getElementById('f-step4');
+  if(s4) s4.classList.remove('hidden');
+  updateTotals();
+};
+document.getElementById('w5n').onclick = function(){
+  showStep('f-w6'); updateTotals();
+};
+
+document.getElementById('w6b').onclick = function(){
+  showStep('f-w5'); updateTotals();
+};
+document.getElementById('w6n').onclick = function(){
+  showStep('f-w7'); updateTotals();
+};
+
+document.getElementById('w7b').onclick = function(){
+  showStep('f-w6'); updateTotals();
+};
+document.getElementById('w7n').onclick = function(){
+  showStep('f-w8'); updateTotals();
+};
+
+document.getElementById('w8b').onclick = function(){
+  showStep('f-w7'); updateTotals();
+};
+document.getElementById('w8n').onclick = function(){
+  showStep('f-w9'); updateTotals();
+};
+
+document.getElementById('w9b').onclick = function(){
+  showStep('f-w8'); updateTotals();
+};
+
+// Craft button unchanged
+document.getElementById('w9c').onclick = craftItem;
+
+
+      document.getElementById('w-addons').addEventListener('change',function(e){ var row=e.target.closest('.lib-item'); if(!row) return; var k=row.getAttribute('data-key'); if(e.target.checked) state.sel.addon.add(k); else state.sel.addon.delete(k); updateTotals(); });
+
+// show the first dynamic step (only one shown at a time)
+showStep('f-w5');
+
+// Back/Next using one-at-a-time pages
+document.getElementById('w5b').onclick = function(){
+  document.getElementById('f-step4').classList.remove('hidden'); // Step 4 is outside dyn area
+  document.getElementById('f-w5').classList.remove('active');
+  updateTotals();
+};
+document.getElementById('w5n').onclick = function(){
+  showStep('f-w6'); updateTotals();
+};
+
+document.getElementById('w6b').onclick = function(){
+  showStep('f-w5'); updateTotals();
+};
+document.getElementById('w6n').onclick = function(){
+  showStep('f-w7'); updateTotals();
+};
+
+document.getElementById('w7b').onclick = function(){
+  showStep('f-w6'); updateTotals();
+};
+document.getElementById('w7n').onclick = function(){
+  showStep('f-w8'); updateTotals();
+};
+
+document.getElementById('w8b').onclick = function(){
+  showStep('f-w7'); updateTotals();
+};
+document.getElementById('w8n').onclick = function(){
+  showStep('f-w9'); updateTotals();
+};
+
+document.getElementById('w9b').onclick = function(){
+  showStep('f-w8'); updateTotals();
+};
+
+// Craft button unchanged:
+document.getElementById('w9c').onclick = craftItem;
+
+
+      document.getElementById('f-w5').classList.remove('hidden'); document.getElementById('w5n').disabled=true;
+    }
+
+    /* ---------- Armour dynamic steps (5..7) ---------- */
+    function buildArmour(host){
+      state.sel={ac:1,props:new Set(),addons:new Set(),mediumStr:false};
+      var cls=(state.schem&&state.schem.class)||'Light'; var max=cls==='Light'?2:(cls==='Medium'?4:8); var opts=''; for(var i=1;i<=max;i++) opts+='<option value="'+i+'">+'+i+' AC</option>';
+      var s5=makeStep(host,'f-a5','Step 5','Armour Class — '+cls,'<select id="a-ac">'+opts+'</select><div class="note-sm" style="margin-top:6px;">Days added = chosen AC. DC per level: +2..+16.</div>','<button class="btn-primary btn-ghost" id="a5b">Back</button><button class="btn-primary" id="a5n">Next</button>');
+      document.getElementById('a-ac').addEventListener('change',function(e){ state.sel.ac=parseInt(e.target.value,10)||1; updateTotals(); });
+
+      var propHTML = window.ForgeData.A_PROPS.map(function(p){
+  var g = (window.ForgeGlossary && window.ForgeGlossary.A_PROP && window.ForgeGlossary.A_PROP[p.key]) || {};
+  return '<div class="chip" data-key="'+p.key+'">'+
+    p.name + ' <span class="badge">+'+p.dc+' DC</span>' +
+    (g.desc ? ' — <span class="gloss-inline">'+g.desc+'</span>' : '') +
+  '</div>';
+}).join('');
+
+
+      var extra= cls==='Medium'? '<label class="inline" style="margin-top:6px;"><input type="checkbox" id="a-str13"> STR 13 requirement (−2 DC)</label>' : (cls==='Heavy'? '<div class="note-sm">Heavy: Stealth Disadvantage (−2 DC) & STR 13 required.</div>':'' );
+      var s6=makeStep(host,'f-a6','Step 6','Armour Properties',extra+'<div id="a-props" class="chips" style="margin-top:8px;">'+propHTML+'</div>','<button class="btn-primary btn-ghost" id="a6b">Back</button><button class="btn-primary" id="a6n">Next</button>');
+      if(cls==='Medium'){ document.getElementById('a-str13').addEventListener('change',function(e){ state.sel.mediumStr=!!e.target.checked; updateTotals(); }); }
+      document.getElementById('a-props').addEventListener('click',function(e){
+        var chip=e.target.closest('.chip'); if(!chip) return;
+        var k=chip.getAttribute('data-key'); var def=window.ForgeData.A_PROPS.find(function(p){return p.key===k});
+        if(def&&def.group==='soak'){
+          ['soakS','soakB','soakP'].forEach(function(x){ state.sel.props.delete(x) });
+          $$('#a-props .chip').forEach(function(c){ var dd=window.ForgeData.A_PROPS.find(function(p){return p.key===c.getAttribute('data-key')}); if(dd&&dd.group==='soak') c.classList.remove('active'); });
+        }
+        chip.classList.toggle('active'); if(chip.classList.contains('active')) state.sel.props.add(k); else state.sel.props.delete(k);
+        updateTotals();
+      });
+
+      var addonHTML = window.ForgeData.A_ADDONS.map(function(a){
+  var g = (window.ForgeGlossary?.A_ADD?.[a.key]) || {};
+  return '<div class="lib-item"><div><div class="lib-name">'+a.name+
+    ' <span class="badge">+'+a.dc+' DC</span> <span class="badge">+1 day</span>'+
+    (g.short? ' <span class="badge">'+g.short+'</span>' : '')+
+    (g.desc? ' <button class="info-btn" title="'+g.desc.replace(/"/g,'&quot;')+'">i</button>' : '')+
+  '</div></div><div class="inline"><input type="checkbox" data-key="'+a.key+'"></div></div>';
+}).join('');
+
+      var s7=makeStep(host,'f-a7','Step 7','Add Ons','<div class="lib-list">'+addonHTML+'</div>','<button class="btn-primary btn-ghost" id="a7b">Back</button><button class="btn-primary" id="a7c">Craft</button>');
+showStep('f-a5');
+showStep('f-a5');     // show only Armour Step 5
+stepUI(5);            // update the tracker to Step 5
+var n=document.getElementById('a5n'); if(n) n.disabled=false;  // allow Next on Step 5
+
+      document.getElementById('f-a7').addEventListener('change',function(e){ var cb=e.target.closest('input[type="checkbox"]'); if(!cb) return; var k=cb.getAttribute('data-key'); if(cb.checked) state.sel.addons.add(k); else state.sel.addons.delete(k); updateTotals(); });
+
+      document.getElementById('a7b').addEventListener('click',function(){ document.getElementById('f-a7').classList.add('hidden'); document.getElementById('f-a6').classList.remove('hidden'); updateTotals(); });
+      document.getElementById('a7c').addEventListener('click',craftItem);
+      document.getElementById('a6b').addEventListener('click',function(){ document.getElementById('f-a6').classList.add('hidden'); document.getElementById('f-a5').classList.remove('hidden'); updateTotals(); });
+      document.getElementById('a6n').addEventListener('click',function(){ document.getElementById('f-a6').classList.add('hidden'); document.getElementById('f-a7').classList.remove('hidden'); updateTotals(); });
+      document.getElementById('a5b').addEventListener('click',function(){ document.getElementById('f-a5').classList.add('hidden'); document.getElementById('f-step4').classList.remove('hidden'); updateTotals(); });
+
+      document.getElementById('f-a5').classList.remove('hidden');
+    }
+
+    /* ---------- Shield dynamic steps (5..6) ---------- */
+    function buildShield(host){
+      state.sel={ac:1,props:new Set(),addons:new Set(),form:(state.schem&&state.schem.form)||'Shield'};
+      var s5=makeStep(host,'f-s5','Step 5','Shield AC','<select id="s-ac"><option value="1">+1 AC</option><option value="2">+2 AC</option><option value="3">+3 AC</option></select><div class="note-sm" style="margin-top:6px;">Days added = AC. DC +4 / +6 / +8.</div>','<button class="btn-primary btn-ghost" id="s5b">Back</button><button class="btn-primary" id="s5n">Next</button>');
+      document.getElementById('s-ac').addEventListener('change',function(e){ state.sel.ac=parseInt(e.target.value,10)||1; updateTotals(); });
+     var propsHTML = window.ForgeData.S_PROPS.map(function(p){
+  var g = (window.ForgeGlossary && window.ForgeGlossary.S_PROP && window.ForgeGlossary.S_PROP[p.key]) || {};
+  return '<div class="chip" data-key="'+p.key+'">'+
+    p.name + ' <span class="badge">+'+p.dc+' DC</span> <span class="badge">+1 day</span>' +
+    (g.desc ? ' — <span class="gloss-inline">'+g.desc+'</span>' : '') +
+  '</div>';
+}).join('');
+
+
+     var addsHTML = window.ForgeData.S_ADDONS.map(function(a){
+  var g = (window.ForgeGlossary && window.ForgeGlossary.S_ADD && window.ForgeGlossary.S_ADD[a.key]) || {};
+  return '<div class="lib-item"><div><div class="lib-name">'+
+    a.name + ' <span class="badge">+'+a.dc+' DC</span> <span class="badge">+1 day</span>' +
+    (g.desc ? ' — <span class="gloss-inline">'+g.desc+'</span>' : '') +
+  '</div></div><div class="inline"><input type="checkbox" data-key="'+a.key+'"></div></div>';
+}).join('');
+
+      var s6=makeStep(host,'f-s6','Step 6','Properties & Add Ons','<div class="note-sm">Some properties cannot be used with certain forms (e.g., not Buckler/Tower).</div><div class="chips" id="s-props" style="margin-top:8px;">'+propsHTML+'</div><div class="lib-list" style="margin-top:10px;">'+addsHTML+'</div>','<button class="btn-primary btn-ghost" id="s6b">Back</button><button class="btn-primary" id="s6c">Craft</button>');
+      document.getElementById('s-props').addEventListener('click',function(e){
+        var chip=e.target.closest('.chip'); if(!chip) return;
+        var key=chip.getAttribute('data-key'); var def=window.ForgeData.S_PROPS.find(function(p){return p.key===key});
+        var ok=true; if(def&&def.req&&def.req.notForm&&def.req.notForm.test(state.sel.form||'')) ok=false;
+        if(def&&def.req&&def.req.notWith){ def.req.notWith.forEach(function(k){ if(state.sel.props.has(k)) ok=false; }); }
+        if(!ok){ alert('This property conflicts with the chosen shield form or another selected property.'); return; }
+        chip.classList.toggle('active'); if(chip.classList.contains('active')) state.sel.props.add(key); else state.sel.props.delete(key);
+        updateTotals();
+      });
+      document.getElementById('f-s6').addEventListener('change',function(e){ var cb=e.target.closest('input[type="checkbox"]'); if(!cb) return; var k=cb.getAttribute('data-key'); if(cb.checked) state.sel.addons.add(k); else state.sel.addons.delete(k); updateTotals(); });
+      document.getElementById('s5b').addEventListener('click',function(){ document.getElementById('f-s5').classList.add('hidden'); document.getElementById('f-step4').classList.remove('hidden'); updateTotals(); });
+      document.getElementById('s5n').addEventListener('click',function(){ document.getElementById('f-s5').classList.add('hidden'); document.getElementById('f-s6').classList.remove('hidden'); updateTotals(); });
+      document.getElementById('s6b').addEventListener('click',function(){ document.getElementById('f-s6').classList.add('hidden'); document.getElementById('f-s5').classList.remove('hidden'); updateTotals(); });
+      document.getElementById('s6c').addEventListener('click',craftItem);
+
+      document.getElementById('f-s5').classList.remove('hidden');
+    }
+  }
+
+  window.mountForge=mountForge;
+  document.addEventListener('DOMContentLoaded',function(){ if(typeof mountForge==='function') mountForge(); });
+})();
+</script>
+
+
+<script>
+/* ===== Property/Add-on Glossary (short rules) ===== */
+(function(){
+  // Weapon properties
+  const W_PROP = {
+    tempered:{short:"+1 dmg",desc:"+1 to damage rolls."},
+    weighted:{short:"+1d4 dmg",desc:"+1d4 damage from added heft."},
+    silent:{short:"silent",desc:"Attacks make no audible sound."},
+    brutal:{short:"+1d4 crit",desc:"Critical hits deal an extra 1d4 damage."},
+    sturdy:{short:"+3 item HP",desc:"Harder to break: +3 item HP."},
+    precision:{short:"ranged adv ≤30ft",desc:"Advantage on ranged attacks within 30 ft."},
+    blinding:{short:"blind on crit (save)",desc:"On a critical hit, Con save or blinded (1 min)."},
+    reinforced:{short:"keep grip",desc:"Advantage to resist being disarmed."},
+    balance:{short:"DEX to dmg",desc:"Use DEX instead of STR for damage."},
+    defreact:{short:"+1 AC react",desc:"Reaction: +1 AC vs one attack."},
+    critmax:{short:"1/enc max crit",desc:"Once per encounter, a critical deals max damage."},
+    lacerate:{short:"bleed 1d4/rd",desc:"On hit, 20% bleed (1d4/round) until treated or healed."},
+    maim:{short:"speed 0 (save)",desc:"On hit, Con save (DC 12) or speed becomes 0; disadv. DEX saves."},
+    disarm:{short:"bonus disarm",desc:"Bonus action attempt to disarm in reach."},
+    dwarfmade:{short:"+1 atk vs gob/beasts",desc:"+1 to attack vs goblinoids & beasts."},
+    elfmade:{short:"+range; conceal",desc:"+100 ft range; advantage to conceal the weapon."},
+    execution:{short:"auto crit prone",desc:"Vs prone: treat hit as a critical (max damage)."},
+    undisarmed:{short:"immune disarm",desc:"Can’t be disarmed unless incapacitated."},
+    whirl:{short:"react swipe",desc:"Reaction attack when a creature enters your reach."},
+    prepare:{short:"+1d6 next",desc:"Half move; +1d6 slashing on your next hit this turn."},
+    pierce:{short:"+2 follow-ups",desc:"Once/round, deep wound: your follow-ups gain +2 piercing."},
+    focus:{short:"self-adv",desc:"Bonus action: advantage on your next attack this turn."},
+    riposte:{short:"counter",desc:"Reaction: when hit in melee, make a counterattack."},
+    pommel:{short:"+1d4 bludgeon",desc:"As part of Attack: add 1d4 bludgeoning."},
+    parry:{short:"+1 AC on Dodge",desc:"While Dodging, +1 AC until your next turn."},
+    flourish:{short:"feint → adv",desc:"Bonus-action feint: WIS save vs your attack roll or gain advantage on your next melee attack."},
+    devastate:{short:"knock prone (save)",desc:"On hit, may knock prone (STR save)."},
+    impact:{short:"+1d4 bludgeon",desc:"Extra blunt impact."},
+    nimble:{short:"DEX twice (1/rd)",desc:"Add DEX mod twice to damage (once/round)."},
+    graze:{short:"miss→2 dmg",desc:"On a miss by 1–2, deal 2 damage."},
+    vex:{short:"next gets adv",desc:"On hit, next attack vs that target this turn has advantage."},
+    nick:{short:"bonus off-hand",desc:"On hit, make a light off-hand attack as a bonus action."},
+    topple:{short:"prone (save)",desc:"On hit, target STR save or falls prone."},
+    slow:{short:"-10 ft",desc:"On hit, target’s speed −10 ft until end of next turn."},
+    push:{short:"push 10 ft (save)",desc:"On hit, push 10 ft on failed STR save."},
+    sap:{short:"-1 atk",desc:"On hit, target −1 to attack rolls until end of next turn."},
+    cleave:{short:"splash mod dmg",desc:"On hit, deal your mod damage to a second creature in reach."},
+    flex:{short:"2H die up",desc:"If wielded two-handed, increase damage die one step."}
+  };
+
+  // Weapon add-ons
+  const W_ADD = {
+    ap:{short:"ignore armor",desc:"Treat targets as having 2 less AC from armor/cover."},
+    crush:{short:"+vs objects",desc:"+2 damage vs objects/structures; better shoves."},
+    greater:{short:"+1 atk/dmg",desc:"+1 to attack and damage rolls."},
+    honed:{short:"+1 atk",desc:"+1 to attack rolls."},
+    inspiring:{short:"ally temp HP",desc:"On crit, nearby ally gains temp HP equal to your proficiency bonus."},
+    keen:{short:"+crit range",desc:"Expand critical range by 1 (e.g., 20 → 19–20)."},
+    linger:{short:"wounds persist",desc:"On crit, injury imposes disadvantage on one ability’s checks until treated."},
+    silent:{short:"mute shot",desc:"Ranged: near-silent; shots don’t reveal your location by sound."},
+    sup:{short:"+2 atk/dmg",desc:"+2 to attack and damage rolls."},
+    supreme:{short:"+3 atk/dmg",desc:"+3 to attack and damage rolls."}
+  };
+
+  // Armour properties
+  const A_PROP = {
+    cushioned:{short:"reduce fall",desc:"Reduce fall damage by 1d6 (min 0)."},
+    pocket:{short:"hidden stash",desc:"Concealed pocket; checks to find at disadvantage."},
+    pauldrons:{short:"+shove/stop",desc:"+2 to resist shove or falling debris."},
+    showy:{short:"+presence",desc:"+1 to Persuasion when displaying status."},
+    spikes:{short:"grapple dmg",desc:"A creature grappling you takes 1 piercing at start of its turn."},
+    springy:{short:"+stand",desc:"Standing from prone costs 5 ft instead of half speed."},
+    subtle:{short:"concealable",desc:"Counts as clothing for casual detection; stealthier cut."},
+    mount:{short:"weapon dock",desc:"Mount a light weapon/gadget on cuirass or gauntlet."},
+    soakS:{short:"soak (Slashing)",desc:"Reduce the first slashing hit each turn by 2."},
+    soakB:{short:"soak (Bludgeon)",desc:"Reduce the first bludgeoning hit each turn by 2."},
+    soakP:{short:"soak (Piercing)",desc:"Reduce the first piercing hit each turn by 2."}
+  };
+
+  // Armour add-ons
+  const A_ADD = {
+    aquatic:{short:"swim armor",desc:"No swim check penalty; water-tight seams."},
+    camo:{short:"blend",desc:"Advantage on Stealth in matching terrain."},
+    elemres:{short:"resist elem",desc:"Choose one element; gain resistance to it (DM scope)."},
+    gprotect:{short:"+1 AC",desc:"+1 AC (stacks)."},
+    intim:{short:"+Intimidate",desc:"+1 to Intimidation checks when visible."},
+    lightwt:{short:"mithral-like",desc:"Counts one class lighter for STR/Stealth penalties."},
+    magnetic:{short:"catch metal",desc:"Advantage to catch/deflect metal projectiles; pick up small metal."},
+    sturdy:{short:"dwarf steel",desc:"+2 item HP; advantage on break tests."},
+    sprotect:{short:"+2 AC",desc:"+2 AC (stacks)."}
+  };
+
+  // Shield properties
+  const S_PROP = {
+    deploy:{short:"brace",desc:"Counts as heavy cover when deployed; immobile (not Tower)."},
+    hidden:{short:"stash",desc:"Secret compartment (not Buckler; conflicts with Deploy)."},
+    plant:{short:"plant & cover",desc:"Plant as object: half-cover to self/ally (not Buckler)."},
+    throw:{short:"throw 1d6 20/60",desc:"Can be thrown (1d6)."},
+    spikey:{short:"spike 1d6",desc:"Shield strikes deal +1d6 piercing (situational)."}
+  };
+
+  // Shield add-ons
+  const S_ADD = {
+    bashing:{short:"+bash dmg",desc:"+1d4 damage when you shove or hit with the shield."},
+    blessed:{short:"radiant ward",desc:"1/day, radiant burst grants ally +1d4 to a saving throw."},
+    bracing:{short:"hold the line",desc:"Advantage to avoid forced movement while braced."},
+    buffeting:{short:"cone shove",desc:"Bonus action: small cone; STR save or pushed 5 ft."},
+    elemres:{short:"resist elem",desc:"Choose one element; resistance while shield is raised."},
+    gshield:{short:"+1 AC (raise)",desc:"+1 AC while actively wielding the shield."},
+    intim:{short:"+Intimidate",desc:"+1 to Intimidation while brandishing."},
+    reflex:{short:"reflect",desc:"Reaction: on ranged hit, reduce by 1d8 and may deflect."},
+    ssuper:{short:"+2 AC (raise)",desc:"+2 AC while actively wielding the shield."}
+  };
+
+  window.ForgeGlossary = { W_PROP, W_ADD, A_PROP, A_ADD, S_PROP, S_ADD };
+})();
+</script>
+
+
+<script>
+/* ===== FX & Audio helpers ===== */
+(function(){
+  "use strict";
+  var $=function(s,sc){return (sc||document).querySelector(s)};
+
+  function playOnce(videoEl){
+    if(!videoEl) return;
+    try{ videoEl.currentTime=0; videoEl.play().catch(function(){/* ignore */}); }catch(e){}
+  }
+  function hideAfter(el,ms){
+    setTimeout(function(){ if(el) el.classList.remove('show'); }, ms||1200);
+  }
+
+  var craftSfxPool=[
+    'Audio Effect (1).mp3','Audio Effect (2).mp3','Audio Effect (3).mp3','Audio Effect (4).mp3'
+  ];
+
+  window.FX={
+    playCraft:function(){
+      var root=$('#fxCraft'); if(!root) return;
+      root.classList.add('show');
+      // pick a craft burst at random
+      var vids=[$('#fxC1'),$('#fxC2')];
+      var pick=vids[Math.floor(Math.random()*vids.length)];
+      vids.forEach(function(v){ if(v){ v.pause(); v.style.display='none'; } });
+      if(pick){ pick.style.display='block'; playOnce(pick); }
+      // SFX
+      var s=$('#sfxCraft'); if(s){ s.src=craftSfxPool[Math.floor(Math.random()*craftSfxPool.length)]; try{s.currentTime=0; s.play().catch(function(){})}catch(e){} }
+      hideAfter(root,1200);
+    },
+    playEnchant:function(){
+      var root=$('#fxEnchant'); if(!root) return;
+      root.classList.add('show');
+      var vids=[$('#fxE1'),$('#fxE2')];
+      var pick=vids[Math.floor(Math.random()*vids.length)];
+      vids.forEach(function(v){ if(v){ v.pause(); v.style.display='none'; } });
+      if(pick){ pick.style.display='block'; playOnce(pick); }
+      // SFX
+      var s=$('#sfxEnchant'); if(s){ s.src='Enchant Audio.ogg'; try{s.currentTime=0; s.play().catch(function(){})}catch(e){} }
+      hideAfter(root,1400);
+    },
+    unlockBgm:function(){
+      var a=$('#bgm'); if(!a) return;
+      try{ a.muted=false; a.play().catch(function(){}) }catch(e){}
+    }
+  };
+
+  // auto-unlock bgm on first gesture
+  document.addEventListener('pointerdown', function onFirst(){
+    document.removeEventListener('pointerdown', onFirst);
+    if(window.FX) window.FX.unlockBgm();
+  }, {once:true});
+})();
+</script>
+
+<script>
+/* ===== Enchanting (steps + components + recipes + queue) ===== */
+(function(){
+  "use strict";
+  var $=function(s,sc){return (sc||document).querySelector(s)};
+  var $$=function(s,sc){return Array.prototype.slice.call((sc||document).querySelectorAll(s))};
+  var ci=function(s){return (s||"").trim().toLowerCase()};
+  var nowId=function(){return Date.now()+Math.floor(Math.random()*9999)};
+  var LSK=_fw.LSK, load=_fw.load, save=_fw.save;
+  var reps=_fw.reps, setReps=_fw.setReps, comps=_fw.comps;
+  function recipes(){return load(LSK.REC,[])}
+  function setRecipes(a){ save(LSK.REC,a); }
+  function queue(){return load(LSK.QUEUE,[])}
+  function setQueue(a){ save(LSK.QUEUE,a); renderQueue(); }
+
+  var RAR_DC={ 'Common':5,'Uncommon':8,'Rare':11,'Very Rare':15,'Legendary':18 };
+
+  var RUNE_SRC = {
+    'Abjuration': 'AbjurationRuneLoop_01_Regular_Blue_400x400.webm',
+    'Conjuration': 'ConjurationRuneLoop_01_Regular_Purple_400x400.webm',
+    'Divination': 'DivinationRuneLoop_01_Regular_Yellow_400x400.webm',
+    'Enchantment': 'EnchantmentRuneLoop_01_Regular_Pink_400x400.webm',
+    'Evocation': 'EvocationRuneLoop_01_Regular_Red_400x400.webm',
+    'Illusion': 'IllusionRuneLoop_01_Regular_Grey_400x400.webm',
+    'Necromancy': 'NecromancyRuneLoop_01_Regular_Green_400x400.webm',
+    'Transmutation': 'TransmutationRuneLoop_01_Regular_Blue_400x400.webm'
+  };
+
+  // Alter the Weave options (no restrictions enforced per user request)
+  var WEAVE=[
+    {k:'die', name:'Adjust Damage Dice', dc:3, desc:'Add or remove one die from a magic item’s damage.'},
+    {k:'dtype', name:'Change Damage Type', dc:2, desc:'Shift the item’s damage type.'},
+    {k:'aoe', name:'Area +5 ft', dc:5, desc:'Add a 5 ft area of effect to the enchant.'},
+    {k:'alert', name:'Alert', dc:3, desc:'Cannot be surprised; sense creatures within 30 ft not behind total cover.'},
+    {k:'arcing', name:'Arcing', dc:5, desc:'On hit, arc lightning to another creature within 5 ft for PB lightning dmg.'},
+    {k:'blasting', name:'Blasting', dc:2, desc:'Area spells cast are 5 ft wider.'},
+    {k:'bound', name:'Bound', dc:2, desc:'Item is bound to you; others rebind on your death.'},
+    {k:'bright', name:'Bright', dc:2, desc:'Can cast Light cantrip on the item.'},
+    {k:'dodging', name:'Dodging', dc:3, desc:'On a miss or Dex save success, move 5 ft without OA.'},
+    {k:'efficient', name:'Efficient', dc:5, desc:'Double the number of charges.'},
+    {k:'elemental', name:'Elemental +1d6', dc:5, desc:'Weapon deals +1d6 (choose Acid/Cold/Fire/Lightning/Poison/Thunder).'},
+    {k:'enduring', name:'Enduring', dc:5, desc:'Armour reduces non-magical B/P/S by 1d4.'},
+    {k:'energising', name:'Energising', dc:6, desc:'Attack with this weapon as a Bonus Action.'},
+    {k:'fortifying', name:'Fortifying', dc:3, desc:'On first don each day, gain 5 temp HP.'},
+    {k:'imprinted', name:'Imprinted Cantrip', dc:6, desc:'Focus stores one cantrip; cast using your spell stats.'},
+    {k:'inspirational', name:'Inspirational', dc:4, desc:'Gain Inspiration at end of a rest while wielding.'},
+    {k:'recharging', name:'Recharging', dc:6, desc:'Regain one charge at end of a Short Rest.'},
+    {k:'refunding', name:'Refunding', dc:5, desc:'On miss with focus spell attack, 50% to refund the slot.'},
+    {k:'reloading', name:'Reloading', dc:6, desc:'Ranged weapon conjures non-magical ammo if empty.'},
+    {k:'seeking', name:'Seeking', dc:5, desc:'Ignore half cover with this weapon.'},
+    {k:'summon', name:'Summonable', dc:3, desc:'Summon/dismiss to an empty hand as a free action.'}
+  ];
+
+  var FLAWS=[
+    {k:'aggressive',desc:'Disadvantage to attack other targets after hitting one until your next turn.'},
+    {k:'backfiring',desc:'Natural 1s on focus spell attacks deal 1d12 Force to you.'},
+    {k:'barbed',desc:'Taking/drawing the item deals 1d4 piercing to you.'},
+    {k:'blocking',desc:'A chosen cantrip cannot be cast with this focus.'},
+    {k:'brittle',desc:'After activation, 1 on d20 causes enchantment to dissipate (or daily at dusk).'},
+    {k:'collapsing',desc:'Armour AC reduces by 1 when hit; falls apart at AC 10.'},
+    {k:'cumbersome',desc:'Armour imposes Disadvantage on Dex saves.'},
+    {k:'cursed',desc:'Cannot willingly end attunement; also −3 to a chosen attribute while attuned.'},
+    {k:'delayed',desc:'On a 1 when casting (1st+ level), spell resolves at start of your next turn.'},
+    {k:'discoloured',desc:'Odd colouration; roll 2d6 for patterns.'},
+    {k:'distracting',desc:'First Concentration check each day at Disadvantage.'},
+    {k:'emotional',desc:'Amplifies a GM-chosen emotion.'},
+    {k:'enlarged',desc:'Item is twice normal size and weight.'},
+    {k:'flammable',desc:'Ignites when you take fire damage; nearby take 1d6 fire each turn for 1 minute.'},
+    {k:'inefficient',desc:'Effects cost 1 more charge.'},
+    {k:'loud',desc:'Audible up to 100 ft whenever used.'},
+    {k:'messy',desc:'Creates dust/filth on use; 10 minutes to clean.'},
+    {k:'overloaded',desc:'After attacks, on low d10 roll you take 1d10 fire and drop the weapon.'},
+    {k:'profane',desc:'Cleric/Paladin spell attacks within 5 ft at Disadvantage.'},
+    {k:'revealing',desc:'Casting creates a disturbance; casters within 300 ft sense it.'},
+    {k:'ridiculous',desc:'Looks absurd; hard to be taken seriously.'},
+    {k:'sapping',desc:'Casting deals Necrotic equal to spell level to you.'},
+    {k:'sickening',desc:'Daily DC13 Con save or Poisoned until next long rest.'},
+    {k:'slippery',desc:'On draw/equip, 1–5 on d20: drops from hand.'},
+    {k:'slow',desc:'Armour reduces Speed by 10 ft.'},
+    {k:'temporary',desc:'Enchantment fades after 1d6 weeks.'},
+    {k:'traitor',desc:'Creator cannot attune this item.'},
+    {k:'unbalanced',desc:'Disadvantage to resist being knocked prone.'},
+    {k:'uncertain',desc:'On activation, 7- fails to work.'},
+    {k:'vulnerable',desc:'Choose a damage type; armour grants Vulnerability to it.'}
+  ];
+
+  // ---------- Helpers ----------
+  function countNeededComponents(recipeList, weaveSet){
+    var need={}; // name -> qty
+    recipeList.forEach(function(r){
+      (r.needs||[]).forEach(function(n){
+        var k=ci(n); need[k]=(need[k]||0)+1;
+      });
+    });
+    // Each weave requires 1 extra Lyrium
+    var lyCount=weaveSet.size;
+    if(lyCount>0){ need[ci('Lyrium')]=(need[ci('Lyrium')]||0)+lyCount; }
+    return need;
+  }
+  function haveAllComponents(needMap){
+    var inv=comps(); var map={}; inv.forEach(function(c){ map[ci(c.name)]=c.qty||0; });
+    var missing=[];
+    Object.keys(needMap).forEach(function(n){
+      if((map[n]||0) < needMap[n]) missing.push(n+' x'+needMap[n]);
+    });
+    return {ok:missing.length===0, missing:missing};
+  }
+  function spendComponents(needMap){
+    var inv=comps(); var changed=false;
+    Object.keys(needMap).forEach(function(n){
+      var i=inv.findIndex(function(c){return ci(c.name)===n});
+      if(i>-1){
+        inv[i].qty=Math.max(0,(inv[i].qty||0)-needMap[n]); changed=true;
+      }
+    });
+    if(changed){ save(LSK.COMP,inv); document.dispatchEvent(new CustomEvent('fw:componentsChanged')); }
+  }
+
+  // ---------- UI: subtab switch ----------
+  function wireEnTabs(){
+    $$('#enchant .en-tab').forEach(function(b){
+      b.addEventListener('click',function(){
+        $$('#enchant .en-tab').forEach(function(x){x.classList.remove('active')}); b.classList.add('active');
+        ['#ench-work','#ench-comps','#ench-recipes','#ench-queue'].forEach(function(id){ var el=$(id); if(el) el.classList.add('hidden') });
+        var v=b.getAttribute('data-view'); var tgt=$(v); if(tgt) tgt.classList.remove('hidden');
+        if(v==="#ench-comps") renderEComps();
+        if(v==="#ench-recipes") renderRecipes();
+        if(v==="#ench-queue") renderQueue();
+        if(v==="#ench-work") mountWork(true);
+      });
+    });
+  }
+
+  // ---------- Components (re-use global comps store) ----------
+  function renderEComps(){
+    var host=$('#ench-comps'); if(!host) return;
+    host.innerHTML = [
+      '<div class="grid2">',
+        '<div class="panel">',
+          '<h3>Add Enchanting Component</h3>',
+          '<div class="grid2"><input id="ec-name" placeholder="Name"><input id="ec-desc" placeholder="Description (optional)"></div>',
+          '<div class="inline" style="margin-top:8px;"><button class="btn-primary" id="ec-add">+ Add Component</button></div>',
+        '</div>',
+        '<div class="panel"><h3>Current Components</h3><div id="ec-list" class="lib-list"></div></div>',
+      '</div>'
+    ].join('');
+    var list=$('#ec-list'); var c=comps();
+    list.innerHTML='';
+    if(!c.length){ list.innerHTML='<div class="note-sm">No components yet.</div>'; }
+    c.forEach(function(it,idx){
+      if(typeof it.qty!=='number') it.qty=0;
+      var row=document.createElement('div'); row.className='lib-item';
+      row.innerHTML='<div><div class="lib-name">'+it.name+' <span class="badge">Qty '+(it.qty||0)+'</span></div><div class="note-sm">'+(it.desc||'')+'</div></div>';
+      var box=document.createElement('div'); box.className='inline';
+      var m=document.createElement('button'); m.className='btn-primary btn-ghost'; m.textContent='–';
+      var p=document.createElement('button'); p.className='btn-primary btn-ghost'; p.textContent='+';
+      var d=document.createElement('button'); d.className='lib-del'; d.textContent='Delete';
+      m.onclick=function(){ var a=comps(); a[idx].qty=Math.max(0,(a[idx].qty||0)-1); save(LSK.COMP,a); renderEComps(); };
+      p.onclick=function(){ var a=comps(); a[idx].qty=(a[idx].qty||0)+1; save(LSK.COMP,a); renderEComps(); };
+      d.onclick=function(){ var a=comps(); a.splice(idx,1); save(LSK.COMP,a); renderEComps(); };
+      box.appendChild(m); box.appendChild(p); box.appendChild(d);
+      row.appendChild(box); list.appendChild(row);
+    });
+    $('#ec-add').onclick=function(){
+      var n=$('#ec-name').value.trim(); if(!n) return;
+      var d=$('#ec-desc').value.trim();
+      var a=comps(); a.unshift({name:n,desc:d,qty:0}); save(LSK.COMP,a); renderEComps();
+      $('#ec-name').value=''; $('#ec-desc').value='';
+    };
+  }
+
+  // ---------- Recipes ----------
+  function renderRecipes(){
+    var host=$('#ench-recipes'); if(!host) return;
+    host.innerHTML=[
+      '<div class="grid2">',
+        '<div class="panel">',
+          '<h3>Add Recipe</h3>',
+          '<div class="grid3">',
+            '<input id="er-name" placeholder="Name">',
+            '<select id="er-rarity" class="select-inline"><option>Common</option><option>Uncommon</option><option>Rare</option><option>Very Rare</option><option>Legendary</option></select>',
+            '<select id="er-school" class="select-inline"><option>Abjuration</option><option>Conjuration</option><option>Divination</option><option>Enchantment</option><option>Evocation</option><option>Illusion</option><option>Necromancy</option><option>Transmutation</option></select>',
+          '</div>',
+          '<label class="inline" style="margin-top:6px;"><input type="checkbox" id="er-attune"> Requires Attunement</label>',
+          '<input id="er-needs" placeholder="Components (comma-separated)" style="margin-top:6px;">',
+          '<textarea id="er-effect" placeholder="Enchantment effect" style="margin-top:6px;"></textarea>',
+          '<div class="inline" style="margin-top:8px;"><button class="btn-primary" id="er-add">+ Add Recipe</button></div>',
+        '</div>',
+        '<div class="panel"><h3>Current Recipes</h3><div id="er-list" class="lib-list"></div></div>',
+      '</div>'
+    ].join('');
+    var list=$('#er-list'); list.innerHTML='';
+    var arr=recipes();
+    if(!arr.length){ list.innerHTML='<div class="note-sm">No recipes yet.</div>'; }
+    arr.forEach(function(r,i){
+      var row=document.createElement('div'); row.className='lib-item';
+      var rune=RUNE_SRC[r.school]||'';
+      row.innerHTML='<div><div class="lib-name">'+r.name+' <span class="badge">'+r.rarity+'</span> <span class="badge">'+r.school+'</span>'+(r.attune?'<span class="badge">Attunement</span>':'')+'</div><div class="note-sm">Needs: '+((r.needs||[]).join(', ')||'—')+'</div><div class="note-sm">'+(r.effect||'')+'</div></div>';
+      if(rune){
+        var vid=document.createElement('video'); vid.src=rune; vid.muted=true; vid.autoplay=true; vid.loop=true; vid.playsInline=true; vid.style.width='64px'; vid.style.height='64px'; vid.style.objectFit='cover'; vid.style.borderRadius='8px'; vid.style.opacity='.85';
+        row.insertBefore(vid,row.firstChild);
+      }
+      var del=document.createElement('button'); del.className='lib-del'; del.textContent='Delete';
+      del.onclick=function(){ var a=recipes(); a.splice(i,1); setRecipes(a); renderRecipes(); };
+      row.appendChild(del); list.appendChild(row);
+    });
+    $('#er-add').onclick=function(){
+      var n=$('#er-name').value.trim(); if(!n) return;
+      var rar=$('#er-rarity').value, sch=$('#er-school').value, att=$('#er-attune').checked;
+      var needs=($('#er-needs').value||'').split(',').map(function(s){return s.trim()}).filter(Boolean);
+      var eff=$('#er-effect').value.trim();
+      var a=recipes(); a.unshift({id:'rec-'+nowId(),name:n,rarity:rar,school:sch,attune:att,needs:needs,effect:eff}); setRecipes(a); renderRecipes();
+      $('#er-name').value=''; $('#er-needs').value=''; $('#er-effect').value=''; $('#er-attune').checked=false;
+    };
+  }
+
+  // ---------- Enchant Work (stepper) ----------
+  function mountWork(forceRebuild){
+    var host=$('#ench-work'); if(!host) return;
+    if(forceRebuild || !host.dataset.mounted){
+      host.dataset.mounted='1';
+      host.innerHTML=[
+        '<div id="e-step1" class="step">',
+          '<div class="kicker">Step 1</div><h3>Select Item</h3>',
+          '<select id="e-item" style="min-width:260px;"></select>',
+          '<div class="controls" style="margin-top:8px;"><button class="btn-primary" id="e-next1" disabled>Next</button></div>',
+        '</div>',
+        '<div id="e-step2" class="step hidden">',
+          '<div class="kicker">Step 2</div><h3>Choose Enchantments</h3>',
+          '<div class="grid2">',
+            '<div>',
+              '<div class="inline"><select id="e-rec" style="min-width:260px;"></select><button class="btn-primary" id="e-addRec">Add</button></div>',
+              '<div id="e-picked" class="lib-list" style="margin-top:8px;"></div>',
+            '</div>',
+            '<div>',
+              '<h3>School Sigils</h3>',
+              '<div id="e-sigils" class="chips"></div>',
+            '</div>',
+          '</div>',
+          '<div class="controls" style="margin-top:8px;"><button class="btn-primary btn-ghost" id="e-back2">Back</button><button class="btn-primary" id="e-next2" disabled>Next</button></div>',
+        '</div>',
+        '<div id="e-step3" class="step hidden">',
+          '<div class="kicker">Step 3</div><h3>Altering the Weave</h3>',
+          '<div class="note-sm">Each picked option adds <b>+1 day</b> and its DC. No restrictions enforced — descriptions shown for clarity.</div>',
+          '<div id="e-weave" class="lib-list" style="margin-top:8px;"></div>',
+          '<div class="controls" style="margin-top:8px;"><button class="btn-primary btn-ghost" id="e-back3">Back</button><button class="btn-primary" id="e-next3">Next</button></div>',
+        '</div>',
+        '<div id="e-step4" class="step hidden">',
+          '<div class="kicker">Step 4</div><h3>Confirm & Begin</h3>',
+          '<div id="e-summary" class="panel" style="margin-bottom:8px;"></div>',
+          '<div class="controls"><button class="btn-primary btn-ghost" id="e-back4">Back</button><button class="btn-primary" id="e-begin">Start Enchanting</button></div>',
+        '</div>',
+        '<div class="progress" style="margin-top:10px;">',
+          '<div class="progress-rail"><div class="progress-fill" id="enProgress" style="width:0%"></div></div>',
+          '<div class="steps" id="enSteps"></div>',
+          '<div class="totals"><div class="tally">Days: <span id="enDays">0</span></div><div class="tally">DC: <span id="enDC">0</span></div></div>',
+        '</div>'
+      ].join('');
+    }
+
+    var state={ itemId:null, picks:[], weave:new Set(), days:0, dc:0, flaw:null };
+// --- ForgeData shim (must exist before stepUI/show use it)
+window.ForgeData = window.ForgeData || {};
+window.ForgeData.stepsCount = function(cat){
+  if(cat==='Weapon') return 9;    // Steps 1–4 + Weapon 5–9
+  if(cat==='Armour') return 7;    // Steps 1–4 + Armour 5–7
+  if(cat==='Shield') return 6;    // Steps 1–4 + Shield 5–6
+  return 4;                       // default (steps 1–4 before choice)
+};
+window.ForgeData.calc = window.ForgeData.calc || {
+  'Weapon': function(state){ return {days:0, dc:0}; },
+  'Armour': function(state){ return {days:0, dc:0}; },
+  'Shield': function(state){ return {days:0, dc:0}; }
+};
+
+    function stepUI(n){
+      var fill=$('#enProgress'), pills=$('#enSteps'), t=4;
+      fill.style.width=((n-1)/3*100)+'%';
+      pills.innerHTML=''; for(var i=1;i<=t;i++){ var p=document.createElement('div'); p.className='step-pill'+(i===n?' active':''); p.textContent='Step '+i; pills.appendChild(p); }
+    }
+    function refreshItems(){
+      var sel=$('#e-item'); var list=reps();
+      if(!list.length){ sel.innerHTML='<option value="" disabled selected>No items in Repairs</option>'; $('#e-next1').disabled=true; return; }
+      sel.innerHTML='<option value="" disabled selected>Select an item</option>'+list.map(function(r){ return '<option value="'+r.id+'">'+r.name+(r.crafted?'':' (crafting)')+'</option>'; }).join('');
+      sel.onchange=function(){ state.itemId=sel.value||null; $('#e-next1').disabled=!state.itemId; stepUI(1); };
+    }
+    function refreshRecipes(){
+      var sel=$('#e-rec'); var arr=recipes();
+      sel.innerHTML='<option value="" disabled selected>Select a recipe</option>'+arr.map(function(r){ return '<option value="'+r.id+'">'+r.name+' — '+r.rarity+' — '+r.school+'</option>'; }).join('');
+    }
+    function renderPicked(){
+      var box=$('#e-picked'); box.innerHTML='';
+      if(!state.picks.length){ box.innerHTML='<div class="note-sm">No enchantments selected.</div>'; }
+      var sigWrap=$('#e-sigils'); sigWrap.innerHTML='';
+      state.picks.forEach(function(r,i){
+        var row=document.createElement('div'); row.className='lib-item';
+        row.innerHTML='<div><div class="lib-name">'+r.name+' <span class="badge">'+r.rarity+'</span> <span class="badge">'+r.school+'</span>'+(r.attune?'<span class="badge">Attunement</span>':'')+'</div><div class="note-sm">Needs: '+((r.needs||[]).join(', ')||'—')+'</div><div class="note-sm">'+(r.effect||'')+'</div></div>';
+        var del=document.createElement('button'); del.className='lib-del'; del.textContent='Remove';
+        del.onclick=function(){ state.picks.splice(i,1); renderPicked(); assess(); };
+        row.appendChild(del); box.appendChild(row);
+        // rune
+        var rune=RUNE_SRC[r.school]; if(rune){
+          var v=document.createElement('video'); v.src=rune; v.muted=true; v.loop=true; v.autoplay=true; v.playsInline=true; v.style.width='56px'; v.style.height='56px'; v.style.borderRadius='8px'; v.style.opacity='.85';
+          sigWrap.appendChild(v);
+        }
+      });
+      assess();
+    }
+    function renderWeave(){
+      var list=$('#e-weave'); list.innerHTML='';
+      WEAVE.forEach(function(w){
+        var row=document.createElement('div'); row.className='lib-item';
+        row.setAttribute('data-key',w.k);
+        row.innerHTML='<div><div class="lib-name">'+w.name+' <span class="badge">+'+w.dc+' DC</span> <span class="badge">+1 day</span></div><div class="note-sm">'+w.desc+'</div></div>';
+        var box=document.createElement('div'); box.className='inline';
+        var cb=document.createElement('input'); cb.type='checkbox'; cb.checked=state.weave.has(w.k);
+        cb.onchange=function(){ if(cb.checked) state.weave.add(w.k); else state.weave.delete(w.k); assess(); };
+        box.appendChild(cb); row.appendChild(box); list.appendChild(row);
+      });
+    }
+    function assess(){
+      // DC & Days
+      var dc=5, days=0; // base
+      state.picks.forEach(function(r){ dc+= (RAR_DC[r.rarity]||0); days+=1; });
+      state.weave.forEach(function(k){ var w=WEAVE.find(function(x){return x.k===k}); if(w){ dc+=w.dc; days+=1; } });
+      state.dc=dc; state.days=days;
+      $('#enDays').textContent=days; $('#enDC').textContent=dc;
+
+      // Component check
+      var need=countNeededComponents(state.picks, state.weave);
+      var chk=haveAllComponents(need);
+      $('#e-next2').disabled = state.picks.length===0 || !chk.ok;
+      // show missing note under picked list:
+      var missNote = $$('#e-picked .note-missing')[0];
+      if(missNote) missNote.remove();
+      if(!chk.ok){
+        var n=document.createElement('div'); n.className='note-sm note-missing'; n.style.color='#ffbdbd';
+        n.textContent='Missing components: '+chk.missing.join(', ');
+        $('#e-picked').appendChild(n);
+      }
+      // Summary (if exists)
+      var sum=$('#e-summary'); if(sum){
+        var names=state.picks.map(function(r){return r.name+' ('+r.rarity+')'}).join(', ') || '—';
+        var weaves=Array.from(state.weave).map(function(k){ var w=WEAVE.find(function(x){return x.k===k}); return (w&&w.name)||k; }).join(', ') || '—';
+        var needTxt=Object.keys(need).length? Object.keys(need).map(function(k){return k+' x'+need[k]}).join(', ') : '—';
+        sum.innerHTML='<div class="grid2"><div><div class="note-sm">Enchantments:</div><div>'+names+'</div><div class="note-sm" style="margin-top:6px;">Weave:</div><div>'+weaves+'</div></div><div><div class="note-sm">Components required:</div><div>'+needTxt+'</div><div class="note-sm" style="margin-top:6px;">Flaw chance:</div><div>'+Math.min(100, state.weave.size*20)+'%</div></div></div>';
+      }
+    }
+
+    // step wiring
+    stepUI(1);
+    refreshItems();
+    refreshRecipes();
+    renderWeave();
+
+    $('#e-next1').onclick=function(){ $('#e-step1').classList.add('hidden'); $('#e-step2').classList.remove('hidden'); stepUI(2); assess(); };
+    $('#e-back2').onclick=function(){ $('#e-step2').classList.add('hidden'); $('#e-step1').classList.remove('hidden'); stepUI(1); };
+    $('#e-next2').onclick=function(){ $('#e-step2').classList.add('hidden'); $('#e-step3').classList.remove('hidden'); stepUI(3); assess(); };
+    $('#e-back3').onclick=function(){ $('#e-step3').classList.add('hidden'); $('#e-step2').classList.remove('hidden'); stepUI(2); };
+    $('#e-next3').onclick=function(){ $('#e-step3').classList.add('hidden'); $('#e-step4').classList.remove('hidden'); stepUI(4); assess(); };
+    $('#e-back4').onclick=function(){ $('#e-step4').classList.add('hidden'); $('#e-step3').classList.remove('hidden'); stepUI(3); };
+
+    // add/remove recipes
+    $('#e-addRec').onclick=function(){
+      var id=($('#e-rec').value||'').trim(); if(!id) return;
+      var r=recipes().find(function(x){return String(x.id)===String(id)}); if(!r) return;
+      state.picks.push(r); renderPicked();
+    };
+    $('#e-rec').onchange=function(){
+      // enable/disable Add button?
+    };
+
+    // Begin enchanting
+    $('#e-begin').onclick=function(){
+      if(!state.itemId){ alert('Pick an item.'); return; }
+      if(!state.picks.length){ alert('Pick at least one enchantment.'); return; }
+      var need=countNeededComponents(state.picks, state.weave);
+      var chk=haveAllComponents(need);
+      if(!chk.ok){ alert('Missing components: '+chk.missing.join(', ')); return; }
+      // Spend components up-front
+      spendComponents(need);
+      // Determine flaw (20% per weave)
+      var flaw=null; var chance=Math.min(1, state.weave.size*0.20);
+      if(Math.random()<chance){ flaw = FLAWS[Math.floor(Math.random()*FLAWS.length)]; }
+
+      // Queue entry (duplicate of item + plan)
+      var ritems=reps(); var item=ritems.find(function(x){return x.id===state.itemId});
+      if(!item){ alert('Item not found in Repairs.'); return; }
+      var q=queue();
+      q.unshift({
+        id:'eq-'+nowId(), targetId:item.id, targetName:item.name,
+        daysRequired:state.days, progress:0, dc:state.dc,
+        picks:state.picks.map(function(r){return {id:r.id,name:r.name,rarity:r.rarity,school:r.school}}),
+        weave:Array.from(state.weave),
+        flaw: flaw ? {k:flaw.k,desc:flaw.desc} : null,
+        startedAt:new Date().toISOString()
+      });
+      setQueue(q);
+      if(window.FX) window.FX.playEnchant();
+      // reset to step 1
+      mountWork(true);
+      // jump to Active tab
+      var t=$('#enchant .en-tab[data-view="#ench-queue"]'); if(t) t.click();
+    };
+  }
+
+  // ---------- Queue render ----------
+  function renderQueue(){
+    var host=$('#ench-queue'); if(!host) return;
+    var q=queue();
+    host.innerHTML='<div class="lib-list" id="eq-list"></div>';
+    var list=$('#eq-list'); list.innerHTML='';
+    if(!q.length){ list.innerHTML='<div class="note-sm">No active enchantments.</div>'; return; }
+    q.forEach(function(job,idx){
+      var row=document.createElement('div'); row.className='lib-item';
+      var pct = job.daysRequired? Math.min(100,(job.progress/job.daysRequired)*100) : 0;
+      row.innerHTML='<div>'+
+        '<div class="lib-name">'+job.targetName+' <span class="badge">DC '+job.dc+'</span></div>'+
+        '<div class="note-sm">Enchants: '+job.picks.map(function(p){return p.name+' ('+p.rarity+')'}).join(', ')+'</div>'+
+        '<div class="note-sm">Weave: '+(job.weave.map(function(k){ var w=WEAVE.find(function(x){return x.k===k}); return (w&&w.name)||k; }).join(', ')||'—')+'</div>'+
+        (job.flaw?'<div class="note-sm" style="color:#ffbdbd">Potential Flaw: '+job.flaw.k+' — '+job.flaw.desc+'</div>':'')+
+        '<div class="bar-row" style="margin-top:6px;"><span class="note-sm">Enchant:</span><div class="craft-rail" style="flex:1"><div class="craft-fill" style="width:'+pct+'%"></div></div><span class="note-sm">'+job.progress+'/'+job.daysRequired+'</span><button class="btn-primary btn-ghost" id="eqM-'+job.id+'">–</button><button class="btn-primary btn-ghost" id="eqP-'+job.id+'">+</button></div>'+
+      '</div>';
+      var box=document.createElement('div'); box.className='inline';
+      var apply=document.createElement('button'); apply.className='btn-primary'; apply.textContent='Apply';
+      var del=document.createElement('button'); del.className='lib-del'; del.textContent='Delete';
+      box.appendChild(apply); box.appendChild(del); row.appendChild(box); list.appendChild(row);
+
+      $('#eqM-'+job.id).onclick=function(){ var a=queue(); a[idx].progress=Math.max(0,(a[idx].progress||0)-1); setQueue(a); };
+      $('#eqP-'+job.id).onclick=function(){ var a=queue(); a[idx].progress=Math.min(a[idx].daysRequired,(a[idx].progress||0)+1); setQueue(a); };
+
+      apply.onclick=function(){
+        if(job.progress < job.daysRequired){ alert('Finish enchanting first.'); return; }
+        // Apply to the item in Repairs (append data, do not remove item)
+        var arr=reps(); var i=arr.findIndex(function(x){return x.id===job.targetId});
+        if(i<0){ alert('Original item not found in Repairs.'); return; }
+        var it=arr[i];
+        it.enchants = it.enchants || [];
+        Array.prototype.push.apply(it.enchants, job.picks.map(function(p){return p.name}));
+        it.weaves = it.weaves || [];
+        Array.prototype.push.apply(it.weaves, job.weave.map(function(k){ var w=WEAVE.find(function(x){return x.k===k}); return (w&&w.name)||k; }));
+        it.flaws = it.flaws || [];
+        if(job.flaw){ it.flaws.push(job.flaw.k); }
+        setReps(arr);
+        // remove from queue
+        var a=queue(); a.splice(idx,1); setQueue(a);
+        // jump to Repairs
+        document.querySelector('.tab-btn[data-tab="#repairs"]').click();
+      };
+      del.onclick=function(){ var a=queue(); a.splice(idx,1); setQueue(a); };
+    });
+  }
+
+  // ---------- Public mount ----------
+  function mountEnchant(force){
+    wireEnTabs();
+    if(force){ 
+      // ensure Enchanting subview is visible
+      var active=$('#enchant .en-tab.active'); if(!active){ var t=$('#enchant .en-tab[data-view="#ench-work"]'); if(t) t.classList.add('active'); }
+      ['#ench-work','#ench-comps','#ench-recipes','#ench-queue'].forEach(function(id){ var el=$(id); if(el) el.classList.add('hidden') });
+      var show=$('#enchant .en-tab.active') ? $('#enchant .en-tab.active').getAttribute('data-view') : '#ench-work';
+      var tgt=$(show); if(tgt) tgt.classList.remove('hidden');
+    }
+    mountWork(true);
+    renderQueue();
+  }
+  window.mountEnchant=mountEnchant;
+
+  // react to repairs/components changes
+  document.addEventListener('fw:repairsChanged', function(){ if(document.querySelector('#enchant') && !document.querySelector('#enchant').classList.contains('hidden')) mountEnchant(true); });
+  document.addEventListener('fw:componentsChanged', function(){ 
+    if(!document.querySelector('#enchant').classList.contains('hidden')){
+      // refresh panes that depend on components
+      var b=$('#enchant .en-tab.active'); if(b && b.getAttribute('data-view')==='#ench-comps') renderEComps();
+    }
+  });
+
+  // initial mount when tab opens is called from bootstrap (Part 3)
+})();
+</script>
+
+<button id="installBtn" class="btn-primary" style="position:fixed;right:12px;bottom:12px;z-index:99;display:none;">Install app</button>
+<script>
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt', (e)=>{
+  e.preventDefault();
+  deferredPrompt=e;
+  document.getElementById('installBtn').style.display='inline-block';
+});
+document.getElementById('installBtn').addEventListener('click', async ()=>{
+  if(!deferredPrompt) return;
+  deferredPrompt.prompt();
+  await deferredPrompt.userChoice;
+  deferredPrompt=null;
+  document.getElementById('installBtn').style.display='none';
+});
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('/sw.js', { scope: '/' })
+      .catch(function(err){ console.log('SW registration failed:', err); });
+  });
+}
+</script>
+
+<script>
+(function(){
+  const TARGET = 'landscape'; // or 'portrait'
+
+  async function tryFullscreen(){
+    const el = document.documentElement;
+    if (!document.fullscreenElement && el.requestFullscreen) {
+      try { await el.requestFullscreen(); } catch(e){}
+    }
+  }
+  function tryLock(){
+    if (screen.orientation && screen.orientation.lock) {
+      screen.orientation.lock(TARGET).catch(()=>{});
+    }
+  }
+
+  // First user gesture: request fullscreen (required by some browsers), then lock
+  document.addEventListener('pointerdown', async function once(){
+    document.removeEventListener('pointerdown', once);
+    await tryFullscreen();
+    tryLock();
+  }, {once:true});
+
+  // Re-apply when returning to the app
+  window.addEventListener('visibilitychange', ()=>{ if (!document.hidden) tryLock(); });
+})();
+</script>
+
+<div id="rotateOverlay">
+  <div class="rotateCard">
+    Rotate device for landscape view
+  </div>
+</div>
+
+
+
+<script>
+(function(){
+  function inlineGloss(listSelector, dataArray, glossMap, perItemSelector){
+    var list = document.querySelector(listSelector); if(!list || !dataArray || !glossMap) return;
+    var nodes = perItemSelector ? list.querySelectorAll(perItemSelector) : list.children;
+    nodes.forEach(function(node, idx){
+      var def = dataArray[idx]; if(!def) return;
+      var g = glossMap[def.key]; if(!g) return;
+      var nameDiv = node.querySelector('.lib-name') || node; 
+      // add short text inline and a small description below
+      if(g.short){
+        // add “ — short” right after the name/DC
+        if(!nameDiv.querySelector('.gloss-short')){
+          nameDiv.insertAdjacentHTML('beforeend',' <span class="gloss-short">— '+g.short+'</span>');
+        }
+      }
+      if(g.desc){
+        if(!node.querySelector('.gloss-note')){
+          nameDiv.insertAdjacentHTML('beforeend','<div class="gloss-note">'+g.desc+'</div>');
+        }
+      }
+    });
+  }
+
+  function applyAll(){
+    if(!window.ForgeData || !window.ForgeGlossary) return;
+
+    // Weapons
+    inlineGloss('#w-props', window.ForgeData.W_PROPS, window.ForgeGlossary.W_PROP, '.lib-item');
+    inlineGloss('#f-w9 .lib-list', window.ForgeData.W_ADDONS, window.ForgeGlossary.W_ADD, '.lib-item');
+
+    // Armour
+    inlineGloss('#f-a5 .chips', window.ForgeData.A_PROPS, window.ForgeGlossary.A_PROP, '.chip');
+    inlineGloss('#f-a6 .lib-list', window.ForgeData.A_ADDONS, window.ForgeGlossary.A_ADD, '.lib-item');
+
+    // Shields
+    inlineGloss('#f-s5 .chips', window.ForgeData.S_PROPS, window.ForgeGlossary.S_PROP, '.chip');
+    inlineGloss('#f-s6 .lib-list', window.ForgeData.S_ADDONS, window.ForgeGlossary.S_ADD, '.lib-item');
+  }
+
+  document.addEventListener('DOMContentLoaded', applyAll);
+  document.addEventListener('fw:componentsChanged', applyAll);
+})();
+</script>
+
+
+<!-- BEGIN Inline Glossary (mobile-first, always-visible) -->
+<script>
+(function(){
+  function inlineGloss(listSelector, dataArray, glossMap, perItemSelector){
+    var list = document.querySelector(listSelector); if(!list || !dataArray || !glossMap) return;
+    var nodes = perItemSelector ? list.querySelectorAll(perItemSelector) : list.children;
+    nodes.forEach(function(node, idx){
+      var def = dataArray[idx]; if(!def) return;
+      var g = glossMap[def.key]; if(!g) return;
+      var nameDiv = node.querySelector('.lib-name') || node;
+      if(g.short && !nameDiv.querySelector('.gloss-short')){
+        nameDiv.insertAdjacentHTML('beforeend',' <span class="gloss-short">— '+g.short+'</span>');
+      }
+      if(g.desc && !node.querySelector('.gloss-note')){
+        nameDiv.insertAdjacentHTML('beforeend','<div class="gloss-note">'+g.desc+'</div>');
+      }
+    });
+  }
+
+  function applyAll(){
+    if(!window.ForgeData || !window.ForgeGlossary) return;
+
+    // Weapons
+    inlineGloss('#w-props', window.ForgeData.W_PROPS, window.ForgeGlossary.W_PROP, '.lib-item');
+    inlineGloss('#f-w9 .lib-list', window.ForgeData.W_ADDONS, window.ForgeGlossary.W_ADD, '.lib-item');
+
+    // Armour
+    inlineGloss('#f-a5 .chips', window.ForgeData.A_PROPS, window.ForgeGlossary.A_PROP, '.chip');
+    inlineGloss('#f-a6 .lib-list', window.ForgeData.A_ADDONS, window.ForgeGlossary.A_ADD, '.lib-item');
+
+    // Shields
+    inlineGloss('#f-s5 .chips', window.ForgeData.S_PROPS, window.ForgeGlossary.S_PROP, '.chip');
+    inlineGloss('#f-s6 .lib-list', window.ForgeData.S_ADDONS, window.ForgeGlossary.S_ADD, '.lib-item');
+  }
+
+  document.addEventListener('DOMContentLoaded', applyAll);
+  document.addEventListener('fw:componentsChanged', applyAll);
+})();
+</script>
+<!-- END Inline Glossary -->
+
